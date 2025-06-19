@@ -1,0 +1,74 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 1rem;
+    font-family: sans-serif;
+    font-size: 16px;
+    background: black;
+}
+
+aside.ui {
+    position: fixed;
+    top: 0;
+    right: 0;
+    background: rgba(0,0,0,0.1);
+    display: inline-flex;
+    flex-direction: column;
+    padding: 1rem 0.5rem 0 0.5rem;
+    border-radius: 0 0 0 10px;
+}
+
+aside.ui .toggle,
+aside.ui a,
+aside.ui button {
+    height: 40px;
+    width: 40px;
+    display: block;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    padding: 0;
+    margin: 0 0 1rem 0;
+}
+
+aside.ui svg {
+    color: white;
+    max-width: 40px;
+    max-height: 40px;
+}
+
+aside.ui .toggle input[type=checkbox]{
+    position: absolute;
+    z-index: -1;
+    visibility: hidden;
+}
+
+aside.ui .toggle svg {
+    display: none;
+}
+
+aside.ui .toggle input[type="checkbox"]:checked ~ svg.on {
+    display: block;
+}
+
+aside.ui .toggle input[type="checkbox"]:not(:checked) ~ svg.off {
+    display: block;
+}
+
+aside.ui .sub-menu {
+    position: relative;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.5s ease-in-out;
+}
+
+aside.ui .sub-menu.open {
+    grid-template-rows: 1fr;
+}
+
+aside.ui .sub-menu-inner {
+    overflow: hidden;
+}
