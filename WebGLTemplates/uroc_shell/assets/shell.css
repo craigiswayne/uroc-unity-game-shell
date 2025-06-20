@@ -1,0 +1,205 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  --color-secondary: #ffcc00;
+  --background-mask: rgba(0,0,0,0.8);
+  width: 100vw;
+  height: 100vh;
+  font-family: sans-serif;
+  font-size: 16px;
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+}
+
+.color-secondary {
+  color: var(--color-secondary);
+}
+
+aside#game-ui-shell {
+  visibility: visible !important;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  flex-direction: column;
+  padding: 1rem 0.5rem 0 0.5rem;
+  border-radius: 0 0 0 10px;
+}
+aside#game-ui-shell .toggle,
+aside#game-ui-shell a,
+aside#game-ui-shell button {
+  height: 40px;
+  width: 40px;
+  display: block;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  padding: 0;
+  margin: 0 0 1rem 0;
+  outline: none;
+}
+aside#game-ui-shell svg {
+  color: white;
+  max-width: 40px;
+  max-height: 40px;
+}
+aside#game-ui-shell .toggle input[type=checkbox] {
+  position: absolute;
+  z-index: -1;
+  visibility: hidden;
+}
+aside#game-ui-shell .toggle svg {
+  display: none;
+}
+aside#game-ui-shell .toggle input[type=checkbox]:checked ~ svg.on {
+  display: block;
+}
+aside#game-ui-shell .toggle input[type=checkbox]:not(:checked) ~ svg.off {
+  display: block;
+}
+aside#game-ui-shell .sub-menu {
+  position: relative;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s ease-in-out;
+}
+aside#game-ui-shell [data-callback=toggle_menu]:has(input:checked) ~ .sub-menu {
+  grid-template-rows: 1fr;
+}
+aside#game-ui-shell .sub-menu-inner {
+  overflow: hidden;
+}
+
+#dialog-quit-confirm {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: none;
+  border: none;
+  color: white;
+  font-family: sans-serif, Arial, system-ui;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 3rem;
+  font-size: 1.8rem;
+  margin: 0;
+  padding: 0;
+}
+#dialog-quit-confirm::backdrop {
+  background: rgba(0, 0, 0, 0.9);
+}
+#dialog-quit-confirm[open] {
+  display: flex;
+}
+#dialog-quit-confirm footer {
+  display: flex;
+  gap: 2rem;
+}
+#dialog-quit-confirm button {
+  cursor: pointer;
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 30px;
+  padding: 1rem 2rem;
+  font-size: 0.8em;
+  margin: 2rem auto;
+  width: max(220px, 20vw);
+}
+#dialog-quit-confirm button.success {
+  background: #8BC34A;
+}
+
+@keyframes slide_out_from_right {
+  0% {
+    transform: translateX(200px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+dialog#slide-out-panel {
+  background: none;
+  border: none;
+  color: white;
+}
+dialog#slide-out-panel::backdrop {
+  background: var(--background-mask);
+}
+dialog#slide-out-panel .lib-icon-close {
+  position: fixed;
+  top: 0;
+  right: 0;
+  color: white;
+  width: 68px;
+  padding: 1rem 2rem 1rem 1rem;
+  cursor: pointer;
+}
+dialog#slide-out-panel .panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: max(500px, 25vw);
+  margin: 0 0 0 auto;
+  background: var(--background-mask);
+  overflow-y: auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  animation: slide_out_from_right 0.3s ease;
+}
+dialog#slide-out-panel .panel .content {
+  padding: 2rem;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+dialog#slide-out-panel .panel footer {
+  display: flex;
+  justify-content: space-evenly;
+  color: white;
+  align-items: center;
+  background: var(--background-mask);
+}
+dialog#slide-out-panel .panel footer .lib-icon-button {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  display: flex;
+  padding: 1rem;
+  box-sizing: content-box;
+  justify-content: center;
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+  border-radius: 10px;
+  margin: auto;
+  outline: none;
+}
+dialog#slide-out-panel .panel footer .lib-icon-button[size=x2] {
+  width: 32px;
+  height: 32px;
+}
+dialog#slide-out-panel .panel footer .lib-icon-button:hover {
+  background-color: var(--background-mask);
+  transform: scale(1.15);
+}
+dialog#slide-out-panel .panel footer > * {
+  padding: 1rem;
+  cursor: pointer;
+  flex-grow: 1;
+  outline: none;
+  border: none;
+}
+
+/*# sourceMappingURL=shell.css.map */

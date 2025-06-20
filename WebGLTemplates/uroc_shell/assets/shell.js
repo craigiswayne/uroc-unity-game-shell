@@ -8,20 +8,46 @@ const GameShell = {
             console.log('toggle', callback_name)
             GameShell[callback_name]();
         } else {
-            console.log('callback cant be called');
+            console.log('callback cant be called', callback_name);
         }
     },
     do_action: (action_name) => {
-        if(GameShell[action_name] === undefined){
+        if (GameShell[action_name] === undefined) {
             console.log('cannot find action', action_name)
             return;
         }
         console.log('doing action', action_name)
         GameShell[action_name]();
     },
-    toggle_menu: () => {
-        document.querySelector('.sub-menu').classList.toggle('open')
+
+    toggle_sounds: () => {
+        if (!GameShell.unityInstance) {
+            return;
+        }
+
+        const sound_on = event?.target?.checked ?? false;
+        GameShell.unityInstance.SendMessage('SoundManager', 'ToggleMute', `${sound_on}`);
     },
+
+    /**
+     * @returns {HTMLCanvasElement}
+     */
+    get_unity_canvas: () => {
+        return document.getElementById('unity-canvas');
+    },
+
+    handle_resize: () => {
+        // GameShell.get_unity_canvas().width = window.innerWidth;
+        // GameShell.get_unity_canvas().height = window.innerHeight;
+        // GameShell.get_unity_canvas().style.width = window.innerWidth + 'px';
+        // GameShell.get_unity_canvas().style.height = window.innerHeight + 'px';
+
+        GameShell.get_unity_canvas().style.width = (window.innerWidth / 100.0 * 90.0) + "px";
+        GameShell.get_unity_canvas().style.height = (window.innerHeight / 100.0 * 90.0) + "px";
+
+    },
+
+    // region fullscreen functionality
     is_fullscreen: false,
     fullscreen_with_shell: () => {
         if (document.fullscreenElement === null) {
@@ -38,7 +64,7 @@ const GameShell = {
         }
     },
     fullscreen: () => {
-        if(!GameShell.unityInstance){
+        if (!GameShell.unityInstance) {
             return;
         }
         if (!GameShell.is_fullscreen) {
@@ -48,8 +74,11 @@ const GameShell = {
         }
         GameShell.is_fullscreen = !GameShell.is_fullscreen;
     },
+    // endregion
+
+    // region quit game functionality
     request_quit: () => {
-        if(!GameShell.unityInstance){
+        if (!GameShell.unityInstance) {
             console.log('cannot quit');
         }
         GameShell.show_quit_confirm_dialog();
@@ -69,7 +98,6 @@ const GameShell = {
         document.body.appendChild(dialog);
     },
     /**
-     *
      * @returns {HTMLDialogElement}
      */
     quit_confirm_dialog: () => document.getElementById('dialog-quit-confirm'),
@@ -91,21 +119,50 @@ const GameShell = {
                 document.location.href = 'https://www.uroc.com'
             });
     },
+    // endregion
+
+    collapse_quick_actions: () => {
+        document.querySelector('[data-callback="toggle_menu"] input[type=checkbox]').checked = false;
+    },
+
+    // region slide out panel
+    get_slide_out_panel: () => {
+        return document.querySelector('#slide-out-panel')
+    },
+
+    show_slide_out_panel: () => {
+        GameShell.collapse_quick_actions();
+        GameShell.get_slide_out_panel().showModal()
+    },
+
+    hide_slide_out_panel: (force = false) => {
+        if(event.target.id !== 'slide-out-panel' && force === false){
+            return;
+        }
+
+        GameShell.get_slide_out_panel().close();
+    },
+    // endregion
+
     init: () => {
         document
             .querySelectorAll('label.toggle input[type=checkbox]')
             .forEach(i => {
-                i.addEventListener('change', (event) =>  GameShell.toggle(i));
+                i.addEventListener('change', (event) => GameShell.toggle(i));
             })
         document
-            .querySelectorAll('button.action')
+            .querySelectorAll('.action[data-action]')
             .forEach(i => {
-                i.addEventListener('click', (event) =>  GameShell.do_action(i.dataset.action));
+                i.addEventListener('click', (event) => GameShell.do_action(i.dataset.action));
             })
-        canvas.addEventListener('fullscreenchange', (event) => {
-            GameShell.is_fullscreen = document.fullscreenElement;
-        })
+
+        if (window['canvas']) {
+            canvas.addEventListener('fullscreenchange', (event) => {
+                GameShell.is_fullscreen = document.fullscreenElement;
+            })
+        }
         GameShell.create_quit_confirm_dialog();
+        window.addEventListener('resize', GameShell.handle_resize);
     }
 }
 document.addEventListener('DOMContentLoaded', GameShell.init)

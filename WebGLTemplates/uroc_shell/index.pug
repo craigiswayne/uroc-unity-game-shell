@@ -1,0 +1,23 @@
+doctype html
+head
+    title {{{ PRODUCT_NAME }}}
+    meta(charset='utf-8')
+    meta(http-equiv='Content-Type' content='text/html; charset=utf-8')
+    link(rel='shortcut icon' href='TemplateData/favicon.ico')
+    link(rel='stylesheet' href='TemplateData/style.css')
+    | #if SHOW_DIAGNOSTICS
+    link(rel='stylesheet' href='<<<TemplateData/diagnostics.css>>>')
+    script(src='<<<TemplateData/diagnostics.js>>>')
+    | #endif
+    link(rel='stylesheet' href='assets/shell.css')
+    script(src='assets/shell.js' defer='')
+body
+    #unity-container.unity-desktop
+        canvas#unity-canvas(width="{{{ WIDTH }}" height="{{ HEIGHT }}}" tabindex="-1")
+        #unity-loading-bar
+            #unity-logo
+            #unity-progress-bar-empty
+                #unity-progress-bar-full
+        #unity-warning
+    include views/quick-actions
+    include views/slide-out-panel
