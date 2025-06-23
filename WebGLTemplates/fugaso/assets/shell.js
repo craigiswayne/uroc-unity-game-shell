@@ -213,6 +213,7 @@ const GameShell = {
     // show language selector modal
     show_language_modal: () => {
         GameShell.get_language_modal().showModal();
+        GameShell.collapse_quick_actions();
     },
     update_language: () => {
         const requested_language = GameShell.get_requested_language();
