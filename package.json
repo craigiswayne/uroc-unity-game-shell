@@ -1,0 +1,19 @@
+{
+  "name": "fugaso",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "pug index.pug",
+    "sass": "sass",
+    "watch": "npm run build -- --watch",
+    "minify": ""
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "pug": "^3.0.3",
+    "pug-cli": "^1.0.0-alpha6",
+    "sass": "^1.89.2"
+  }
+}
