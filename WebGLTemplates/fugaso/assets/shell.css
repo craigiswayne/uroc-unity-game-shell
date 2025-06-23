@@ -72,7 +72,7 @@ aside#game-ui-shell .sub-menu {
   grid-template-rows: 0fr;
   transition: grid-template-rows 0.5s ease-in-out;
 }
-aside#game-ui-shell [data-callback=toggle_menu]:has(input:checked) ~ .sub-menu {
+aside#game-ui-shell [data-callback=expand_menu]:has(input:checked) ~ .sub-menu {
   grid-template-rows: 1fr;
 }
 aside#game-ui-shell .sub-menu-inner {

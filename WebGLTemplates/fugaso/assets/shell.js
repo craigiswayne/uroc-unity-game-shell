@@ -122,7 +122,7 @@ const GameShell = {
     // endregion
 
     collapse_quick_actions: () => {
-        document.querySelector('[data-callback="toggle_menu"] input[type=checkbox]').checked = false;
+        document.querySelector('[data-callback="expand_menu"] input[type=checkbox]').checked = false;
     },
 
     // region slide out panel
