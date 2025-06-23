@@ -207,7 +207,7 @@ const GameShell = {
     },
     update_flag_image_elements: (language_code) => {
         document.querySelectorAll('img.flag').forEach(i => {
-            i.src = `assets/flags/${language_code}.svg`;
+            i.src = `shell/flags/${language_code}.svg`;
         })
     },
     // show language selector modal

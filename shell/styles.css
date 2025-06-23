@@ -238,6 +238,9 @@ dialog#game_rules .panel footer > * {
   max-width: 140px;
   border-radius: 12px;
 }
+#language-modal .content {
+  margin: 24px 0;
+}
 #language-modal nav {
   display: flex;
   justify-content: center;
@@ -256,15 +259,21 @@ dialog#game_rules .panel footer > * {
   --size: 70px;
   padding: 10px;
 }
+#language-modal nav button:active {
+  --color: #53b2f7;
+  border-color: var(--color);
+  color: var(--color);
+}
 #language-modal label {
   margin: 8px 0;
   display: block;
+  line-height: 46px;
 }
 #language-modal footer {
-  padding: 8px 16px 8px 16px;
   display: flex;
   justify-content: center;
   gap: 24px;
+  margin: 24px;
 }
 #language-modal footer button {
   background: black;
@@ -284,12 +293,5 @@ dialog#game_rules .panel footer > * {
   color: var(--color);
   border-color: var(--color);
 }
-#language-modal footer {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  padding: 0;
-  margin: 24px;
-}
 
-/*# sourceMappingURL=shell.css.map */
+/*# sourceMappingURL=styles.css.map */
