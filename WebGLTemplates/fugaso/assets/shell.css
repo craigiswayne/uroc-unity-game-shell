@@ -4,7 +4,7 @@
 
 body {
   --color-secondary: #ffcc00;
-  --background-mask: rgba(0,0,0,0.8);
+  --background-mask: rgba(0, 0, 0, 0.8);
   width: 100vw;
   height: 100vh;
   font-family: sans-serif;
@@ -22,7 +22,11 @@ img {
   color: var(--color-secondary);
 }
 
-aside#game-ui-shell {
+[href], button, [onclick] {
+  cursor: pointer;
+}
+
+aside#quick-actions {
   visibility: visible !important;
   position: fixed;
   top: 0;
@@ -32,50 +36,50 @@ aside#game-ui-shell {
   flex-direction: column;
   padding: 1rem 0.5rem 0 0.5rem;
   border-radius: 0 0 0 10px;
+  user-select: none;
 }
-aside#game-ui-shell .toggle,
-aside#game-ui-shell a,
-aside#game-ui-shell button {
+aside#quick-actions .toggle,
+aside#quick-actions a,
+aside#quick-actions button {
   height: 40px;
   width: 40px;
   display: block;
   background: none;
   border: none;
-  cursor: pointer;
   text-align: center;
   padding: 0;
   margin: 0 0 1rem 0;
   outline: none;
 }
-aside#game-ui-shell svg {
+aside#quick-actions svg {
   color: white;
   max-width: 40px;
   max-height: 40px;
 }
-aside#game-ui-shell .toggle input[type=checkbox] {
+aside#quick-actions .toggle input[type=checkbox] {
   position: absolute;
   z-index: -1;
   visibility: hidden;
 }
-aside#game-ui-shell .toggle svg {
+aside#quick-actions .toggle svg {
   display: none;
 }
-aside#game-ui-shell .toggle input[type=checkbox]:checked ~ svg.on {
+aside#quick-actions .toggle input[type=checkbox]:checked ~ svg.on {
   display: block;
 }
-aside#game-ui-shell .toggle input[type=checkbox]:not(:checked) ~ svg.off {
+aside#quick-actions .toggle input[type=checkbox]:not(:checked) ~ svg.off {
   display: block;
 }
-aside#game-ui-shell .sub-menu {
+aside#quick-actions .sub-menu {
   position: relative;
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows 0.5s ease-in-out;
 }
-aside#game-ui-shell [data-callback=expand_menu]:has(input:checked) ~ .sub-menu {
+aside#quick-actions #toggle_menu:has(input:checked) ~ .sub-menu {
   grid-template-rows: 1fr;
 }
-aside#game-ui-shell .sub-menu-inner {
+aside#quick-actions .sub-menu-inner {
   overflow: hidden;
 }
 
@@ -107,7 +111,6 @@ aside#game-ui-shell .sub-menu-inner {
   gap: 2rem;
 }
 #dialog-quit-confirm button {
-  cursor: pointer;
   background: white;
   color: black;
   border: none;
@@ -131,24 +134,25 @@ aside#game-ui-shell .sub-menu-inner {
     opacity: 1;
   }
 }
-dialog#slide-out-panel {
+dialog#language-modal::backdrop,
+dialog#game_rules::backdrop {
+  background: var(--background-mask);
+}
+
+dialog#game_rules {
   background: none;
   border: none;
   color: white;
 }
-dialog#slide-out-panel::backdrop {
-  background: var(--background-mask);
-}
-dialog#slide-out-panel .lib-icon-close {
+dialog#game_rules .lib-icon-close {
   position: fixed;
   top: 0;
   right: 0;
   color: white;
   width: 68px;
   padding: 1rem 2rem 1rem 1rem;
-  cursor: pointer;
 }
-dialog#slide-out-panel .panel {
+dialog#game_rules .panel {
   position: fixed;
   top: 0;
   right: 0;
@@ -161,22 +165,21 @@ dialog#slide-out-panel .panel {
   flex-direction: column;
   animation: slide_out_from_right 0.3s ease;
 }
-dialog#slide-out-panel .panel .content {
+dialog#game_rules .panel .content {
   padding: 2rem;
   flex-grow: 1;
   overflow-y: auto;
 }
-dialog#slide-out-panel .panel footer {
+dialog#game_rules .panel footer {
   display: flex;
   justify-content: space-evenly;
   color: white;
   align-items: center;
   background: var(--background-mask);
 }
-dialog#slide-out-panel .panel footer .lib-icon-button {
+dialog#game_rules .panel footer .lib-icon-button {
   width: 18px;
   height: 18px;
-  cursor: pointer;
   display: flex;
   padding: 1rem;
   box-sizing: content-box;
@@ -186,20 +189,107 @@ dialog#slide-out-panel .panel footer .lib-icon-button {
   margin: auto;
   outline: none;
 }
-dialog#slide-out-panel .panel footer .lib-icon-button[size=x2] {
+dialog#game_rules .panel footer .lib-icon-button[size=x2] {
   width: 32px;
   height: 32px;
 }
-dialog#slide-out-panel .panel footer .lib-icon-button:hover {
+dialog#game_rules .panel footer .lib-icon-button:hover {
   background-color: var(--background-mask);
   transform: scale(1.15);
 }
-dialog#slide-out-panel .panel footer > * {
+dialog#game_rules .panel footer > * {
   padding: 1rem;
   cursor: pointer;
   flex-grow: 1;
   outline: none;
   border: none;
+}
+
+#language-modal {
+  color: white;
+  background: black;
+  border-radius: 31px;
+  font-size: 40px;
+  padding: 0;
+  font-family: sans-serif;
+  /* opacity: 0.2; */
+  width: 800px;
+  text-align: center;
+  /* height: 430px; */
+  background: hsl(0, 0%, 22%);
+  background: linear-gradient(180deg, hsl(0, 0%, 22%) 0%, hsl(20, 3%, 19%) 50%, hsl(0, 0%, 13%) 100%);
+  background: -moz-linear-gradient(180deg, hsl(0, 0%, 22%) 0%, hsl(20, 3%, 19%) 50%, hsl(0, 0%, 13%) 100%);
+  background: -webkit-linear-gradient(270deg, hsl(0, 0%, 22%) 0%, hsl(20, 3%, 19%) 50%, hsl(0, 0%, 13%) 100%);
+  user-select: none;
+  border: 3px solid black;
+}
+#language-modal header {
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.3);
+}
+#language-modal button {
+  color: white;
+}
+#language-modal svg {
+  color: inherit;
+  width: 100%;
+}
+#language-modal img.flag {
+  max-width: 140px;
+  border-radius: 12px;
+}
+#language-modal nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 24px 0;
+}
+#language-modal nav img.flag {
+  margin: 0 32px;
+}
+#language-modal nav button {
+  background: black;
+  border-radius: 50%;
+  width: var(--size);
+  height: var(--size);
+  border: 4px solid gray;
+  --size: 70px;
+  padding: 10px;
+}
+#language-modal label {
+  margin: 8px 0;
+  display: block;
+}
+#language-modal footer {
+  padding: 8px 16px 8px 16px;
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+#language-modal footer button {
+  background: black;
+  color: white;
+  border: 4px solid #858585;
+  border-radius: 42px;
+  padding: 10px 36px;
+  width: 144px;
+}
+#language-modal footer button#close_language_dialog:hover {
+  --color: #f44336;
+  color: var(--color);
+  border-color: var(--color);
+}
+#language-modal footer button#update_language:hover {
+  --color: #4caf50;
+  color: var(--color);
+  border-color: var(--color);
+}
+#language-modal footer {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 0;
+  margin: 24px;
 }
 
 /*# sourceMappingURL=shell.css.map */

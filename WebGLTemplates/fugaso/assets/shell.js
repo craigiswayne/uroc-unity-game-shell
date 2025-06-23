@@ -5,10 +5,7 @@ const GameShell = {
         const callback_name = parent.dataset.callback;
 
         if (callback_name && typeof GameShell[callback_name] === 'function') {
-            console.log('toggle', callback_name)
             GameShell[callback_name]();
-        } else {
-            console.log('callback cant be called', callback_name);
         }
     },
     do_action: (action_name) => {
@@ -63,7 +60,7 @@ const GameShell = {
             }
         }
     },
-    fullscreen: () => {
+    toggle_fullscreen: () => {
         if (!GameShell.unityInstance) {
             return;
         }
@@ -122,25 +119,114 @@ const GameShell = {
     // endregion
 
     collapse_quick_actions: () => {
-        document.querySelector('[data-callback="expand_menu"] input[type=checkbox]').checked = false;
+        document.querySelector('#toggle_menu input[type=checkbox]').checked = false;
     },
 
-    // region slide out panel
-    get_slide_out_panel: () => {
-        return document.querySelector('#slide-out-panel')
+    // region game rules dialog
+    get_game_rules_dialog: () => {
+        return document.querySelector('dialog#game_rules')
     },
-
-    show_slide_out_panel: () => {
+    show_game_rules: () => {
         GameShell.collapse_quick_actions();
-        GameShell.get_slide_out_panel().showModal()
+        GameShell.get_game_rules_dialog().showModal()
     },
-
-    hide_slide_out_panel: (force = false) => {
-        if(event.target.id !== 'slide-out-panel' && force === false){
+    hide_game_rules: (force = false) => {
+        if(event.target.id !== 'game_rules' && force === false){
             return;
         }
+        GameShell.get_game_rules_dialog().close();
+    },
+    // endregion
 
-        GameShell.get_slide_out_panel().close();
+    // region language modal
+    /**
+     *
+     * @returns {HTMLDialogElement}
+     */
+    current_language: 'en',
+    /**
+     * @see https://flagicons.lipis.dev/
+     */
+    available_languages: [
+        {
+            'code': 'en',
+            'label': 'ENGLISH'
+        },
+        {
+            'code': 'es',
+            'label': 'ESPAÑOL'
+        },
+        {
+            'code': 'fe',
+            'label': 'FRANÇAIS'
+        },
+        {
+            'code': 'pt',
+            'label': 'PORTUGUÊS'
+        },
+        {
+            'code': 'cn',
+            'label': '中国人'
+        }
+    ],
+    get_language_modal: () => {
+        return document.querySelector('dialog#language-modal')
+    },
+    /**
+     * @returns {HTMLImageElement}
+     */
+    get_language_modal_flag: () => {
+        return GameShell.get_language_modal().querySelector('img.flag');
+    },
+    /**
+     * @returns {HTMLImageElement}
+     */
+    get_language_modal_label: () => {
+        return GameShell.get_language_modal().querySelector('label');
+    },
+    /**
+     *
+     * @returns {string}
+     */
+    get_requested_language: () => {
+        return GameShell.get_language_modal_flag().getAttribute('src').split('/').pop().replace('.svg', '');
+    },
+    previous_language: () => {
+        const current_index = GameShell.available_languages.findIndex(i => i.code === GameShell.get_requested_language())
+        const index_to_use = (current_index -1 + GameShell.available_languages.length) % GameShell.available_languages.length;
+        const language_to_use = GameShell.available_languages[index_to_use].code;
+        GameShell.get_language_modal_label().innerText = GameShell.available_languages[index_to_use].label;
+        GameShell.get_language_modal_flag().src = `assets/flags/${language_to_use}.svg`;
+    },
+    next_language: () => {
+        const current_index = GameShell.available_languages.findIndex(i => i.code === GameShell.get_requested_language())
+        const index_to_use = (current_index +1) % GameShell.available_languages.length;
+        const language_to_use = GameShell.available_languages[index_to_use].code;
+        GameShell.get_language_modal_label().innerText = GameShell.available_languages[index_to_use].label;
+        GameShell.get_language_modal_flag().src = `assets/flags/${language_to_use}.svg`;
+    },
+    // show language selector modal
+    show_language_modal: () => {
+        GameShell.get_language_modal().showModal();
+    },
+    update_language: () => {
+        const requested_language = GameShell.get_requested_language();
+        if(requested_language === GameShell.current_language){
+            GameShell.close_language_modal(true);
+            return;
+        }
+        GameShell.current_language = requested_language;
+        GameShell.close_language_modal();
+        GameShell.unityInstance.SendMessage('LanguageManager', 'Update', requested_language)
+    },
+    close_language_modal: (force = false) => {
+        if(force){
+            const index_to_use = GameShell.available_languages.findIndex(i => i.code === GameShell.current_language)
+            const language_to_use = GameShell.available_languages[index_to_use].code;
+            GameShell.get_language_modal_label().innerText = GameShell.available_languages[index_to_use].label;
+            GameShell.get_language_modal_flag().src = `assets/flags/${language_to_use}.svg`;
+        }
+        GameShell.get_language_modal().close();
     },
     // endregion
 

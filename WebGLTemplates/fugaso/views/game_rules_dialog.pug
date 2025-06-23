@@ -1,6 +1,6 @@
-dialog#slide-out-panel.action(data-action="hide_slide_out_panel")
+dialog#game_rules.action(onclick="GameShell.hide_game_rules()")
     .panel(style='translate: none; rotate: none; scale: none; transform: translate(0px, 0px);')
-        .lib-icon-close(onclick="GameShell.hide_slide_out_panel(true)")
+        .lib-icon-close(onclick="GameShell.hide_game_rules(true)")
             svg(viewbox='0 0 160 160' fill='none' xmlns='http://www.w3.org/2000/svg' width='100%')
                 path(d='M152 8L8 152' stroke='currentColor' stroke-width='16' stroke-linecap='round' stroke-linejoin='round')
                 path(d='M152 152L8 8' stroke='currentColor' stroke-width='16' stroke-linecap='round' stroke-linejoin='round')
