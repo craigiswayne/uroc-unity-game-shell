@@ -236,7 +236,8 @@ const GameShell = {
     },
     // endregion
 
-    init: () => {
+    init: (unityInstance = null) => {
+        this.unityInstance = unityInstance;
         document
             .querySelectorAll('label.toggle input[type=checkbox]')
             .forEach(i => {
