@@ -196,14 +196,19 @@ const GameShell = {
         const index_to_use = (current_index -1 + GameShell.available_languages.length) % GameShell.available_languages.length;
         const language_to_use = GameShell.available_languages[index_to_use].code;
         GameShell.get_language_modal_label().innerText = GameShell.available_languages[index_to_use].label;
-        GameShell.get_language_modal_flag().src = `assets/flags/${language_to_use}.svg`;
+        GameShell.update_flag_image_elements(language_to_use);
     },
     next_language: () => {
         const current_index = GameShell.available_languages.findIndex(i => i.code === GameShell.get_requested_language())
         const index_to_use = (current_index +1) % GameShell.available_languages.length;
         const language_to_use = GameShell.available_languages[index_to_use].code;
         GameShell.get_language_modal_label().innerText = GameShell.available_languages[index_to_use].label;
-        GameShell.get_language_modal_flag().src = `assets/flags/${language_to_use}.svg`;
+        GameShell.update_flag_image_elements(language_to_use);
+    },
+    update_flag_image_elements: (language_code) => {
+        document.querySelectorAll('img.flag').forEach(i => {
+            i.src = `assets/flags/${language_code}.svg`;
+        })
     },
     // show language selector modal
     show_language_modal: () => {
@@ -224,7 +229,7 @@ const GameShell = {
             const index_to_use = GameShell.available_languages.findIndex(i => i.code === GameShell.current_language)
             const language_to_use = GameShell.available_languages[index_to_use].code;
             GameShell.get_language_modal_label().innerText = GameShell.available_languages[index_to_use].label;
-            GameShell.get_language_modal_flag().src = `assets/flags/${language_to_use}.svg`;
+            GameShell.update_flag_image_elements(language_to_use);
         }
         GameShell.get_language_modal().close();
     },
