@@ -3,6 +3,7 @@ head
     title {{{ PRODUCT_NAME }}}
     meta(charset='utf-8')
     meta(http-equiv='Content-Type' content='text/html; charset=utf-8')
+    //meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
     link(rel='shortcut icon' href='TemplateData/favicon.ico')
     link(rel='stylesheet' href='TemplateData/style.css')
     | #if SHOW_DIAGNOSTICS
@@ -20,8 +21,7 @@ body
                 #unity-progress-bar-full
         #unity-warning
     include views/quick_actions_menu
-    //include views/game_rules_dialog
-    include views/game_rules_modal_v2
+    include views/game_rules_modal
     include views/language_modal
     include views/error_modal
     include views/quit_modal

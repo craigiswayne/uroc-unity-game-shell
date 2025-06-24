@@ -1,20 +1,15 @@
 dialog#language_modal.fugaso
     header CHOOSE YOUR LANGUAGE
     .content
-        nav
+        .column
             button.nav-previous(onclick="GameShell.previous_language()")
                 svg(xmlns='http://www.w3.org/2000/svg' viewbox='0 0 256 256')
                     polyline(points='160 208 80 128 160 48' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='48')
-            img.flag(src="shell/flags/en.svg")
+            img.flag(src="https://ik.imagekit.io/bmp6bnlpn/flags/en.svg?updatedAt=1750776194371")
             button.nav-next(onclick="GameShell.next_language()")
                 svg(xmlns='http://www.w3.org/2000/svg' viewbox='0 0 256 256')
                     polyline(points='96 48 176 128 96 208' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='48')
     label ENGLISH
     footer
-        button#close_language_dialog(onclick="GameShell.close_language_modal(true)")
-            svg(xmlns='http://www.w3.org/2000/svg' viewbox='0 0 256 256')
-                line(x1='200' y1='56' x2='56' y2='200' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='24')
-                line(x1='200' y1='200' x2='56' y2='56' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='24')
-        button#update_language(onclick="GameShell.update_language()")
-            svg(xmlns='http://www.w3.org/2000/svg' viewbox='0 0 256 256')
-                polyline(points='40 144 96 200 224 72' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='24')
+        button.cta(onclick="GameShell.close_language_modal(true)") CANCEL
+        button.cta.success(onclick="GameShell.update_language()") OK
