@@ -1,4 +1,4 @@
-dialog#error_modal.fugaso
+dialog#error_modal.fugaso(onclick="GameShell.reload()")
     header
         svg(xmlns='http://www.w3.org/2000/svg' viewbox='0 0 256 256' height='50')
             rect(width='256' height='256' fill='none')
@@ -9,4 +9,4 @@ dialog#error_modal.fugaso
         div.column.center-center
             p AN UNEXPECTED ERROR HAS OCCURRED
     footer
-        button.cta.error(onclick="document.location.reload()") RELOAD GAME
+        button.cta.error(onclick="GameShell.reload()") RELOAD GAME

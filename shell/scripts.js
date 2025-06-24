@@ -26,6 +26,10 @@ const GameShell = {
         GameShell.unityInstance.SendMessage('SoundManager', 'ToggleMute', `${sound_on}`);
     },
 
+    collapse_quick_actions: () => {
+        document.querySelector('#toggle_menu input[type=checkbox]').checked = false;
+    },
+
     // region game rules
     /**
      * @returns {HTMLDialogElement}
@@ -49,14 +53,8 @@ const GameShell = {
     },
 
     handle_resize: () => {
-        // GameShell.get_unity_canvas().width = window.innerWidth;
-        // GameShell.get_unity_canvas().height = window.innerHeight;
-        // GameShell.get_unity_canvas().style.width = window.innerWidth + 'px';
-        // GameShell.get_unity_canvas().style.height = window.innerHeight + 'px';
-
         GameShell.get_unity_canvas().style.width = (window.innerWidth / 100.0 * 90.0) + "px";
         GameShell.get_unity_canvas().style.height = (window.innerHeight / 100.0 * 90.0) + "px";
-
     },
 
     // region fullscreen functionality
@@ -113,11 +111,7 @@ const GameShell = {
     },
     // endregion
 
-    collapse_quick_actions: () => {
-        document.querySelector('#toggle_menu input[type=checkbox]').checked = false;
-    },
-
-    // region language modal
+    // region language selector
     /**
      *
      * @returns {HTMLDialogElement}
@@ -211,6 +205,21 @@ const GameShell = {
             GameShell.update_flag_image_elements(language_to_use);
         }
         GameShell.get_language_modal().close();
+    },
+    // endregion
+
+    // region error popup
+    show_error_popup: (error_text = '') => {
+        const error_modal = document.querySelector('dialog#error_modal');
+        error_modal.addEventListener('cancel', event => {
+            event.preventDefault();
+            event.stopPropagation();
+            GameShell.reload();
+        });
+        error_modal.showModal();
+    },
+    reload: () => {
+        document.location.reload();
     },
     // endregion
 
