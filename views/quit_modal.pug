@@ -1,0 +1,9 @@
+dialog#quit_modal.fugaso
+    header QUIT
+    .content
+        div.column
+            p Do you really want to exit this game?
+            p Clock OK to exit or CANCEL to stay in this game.
+    footer
+        button.cta(onclick="GameShell.quit_confirm()") OK
+        button.cta.success(onclick="GameShell.hide_quit_dialog()") CANCEL

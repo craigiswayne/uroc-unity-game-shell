@@ -353,12 +353,25 @@ dialog.fugaso {
   }
 }
 
-button.error {
-  --color: #F44336;
-  font-size: 1.2em;
-  color: white;
-  border-radius: 12px;
-  padding: 0.4em 0.6em;
-  border: 4px outset var(--color);
-  background: var(--color);
+dialog.fugaso {
+  footer button.cta {
+    color: black;
+    --background-color: #eee;
+    font-size: 1.2em;
+    border-radius: 12px;
+    padding: 0.4em 0.6em;
+    border: 4px outset var(--background-color);
+    background: var(--background-color);
+
+    &.error {
+      --background-color: #F44336;
+      color: white;
+    }
+
+    &.success {
+      --background-color: #8BC34A;
+      color: white;
+    }
+
+  }
 }

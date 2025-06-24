@@ -74,35 +74,15 @@ const GameShell = {
     // endregion
 
     // region quit game functionality
-    request_quit: () => {
-        if (!GameShell.unityInstance) {
-            console.log('cannot quit');
-        }
-        GameShell.show_quit_confirm_dialog();
-    },
-    create_quit_confirm_dialog: () => {
-        const dialog = document.createElement('dialog');
-        dialog.id = 'dialog-quit-confirm';
-        dialog.addEventListener('click', GameShell.hide_quit_confirm_dialog);
-        dialog.innerHTML = `
-            <div>Do you really want to exit this game?</div>
-            <div>Clock OK to exit or CANCEL to stay in this game.</div>
-            <footer>
-                <button tabindex="-1" onclick="GameShell.quit_confirm()">OK</button>
-                <button tabindex="1" class="success" onclick="GameShell.hide_quit_confirm_dialog()">CANCEL</button>
-            </footer>
-        `;
-        document.body.appendChild(dialog);
-    },
     /**
      * @returns {HTMLDialogElement}
      */
-    quit_confirm_dialog: () => document.getElementById('dialog-quit-confirm'),
-    show_quit_confirm_dialog: () => {
-        GameShell.quit_confirm_dialog().showModal();
+    get_quit_modal: () => document.querySelector('dialog#quit_modal'),
+    show_quit_dialog: () => {
+        GameShell.get_quit_modal().showModal();
     },
-    hide_quit_confirm_dialog: () => {
-        GameShell.quit_confirm_dialog().close();
+    hide_quit_dialog: () => {
+        GameShell.get_quit_modal().close();
     },
     quit_confirm: () => {
         GameShell.unityInstance.Quit()
@@ -254,7 +234,6 @@ const GameShell = {
                 GameShell.is_fullscreen = document.fullscreenElement;
             })
         }
-        GameShell.create_quit_confirm_dialog();
         window.addEventListener('resize', GameShell.handle_resize);
     }
 }
