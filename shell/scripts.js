@@ -180,11 +180,10 @@ const GameShell = {
         return GameShell.get_language_modal().querySelector('label');
     },
     /**
-     *
      * @returns {string}
      */
     get_requested_language: () => {
-        return GameShell.get_language_modal_flag().getAttribute('src').split('/').pop().replace('.svg', '');
+        return GameShell.get_language_modal_flag().getAttribute('src').split('/').pop().split('.').shift();
     },
     previous_language: () => {
         const current_index = GameShell.available_languages.findIndex(i => i.code === GameShell.get_requested_language())
@@ -202,7 +201,7 @@ const GameShell = {
     },
     update_flag_image_elements: (language_code) => {
         document.querySelectorAll('img.flag').forEach(i => {
-            i.src = `shell/flags/${language_code}.svg`;
+            i.src = `https://ik.imagekit.io/bmp6bnlpn/flags/${language_code}.svg?updatedAt=1750776194371`;
         })
     },
     // show language selector modal
