@@ -318,6 +318,7 @@ dialog.fugaso {
   user-select: none;
   width: 800px;
   max-width: 100%;
+  overflow: hidden;
   border-radius: 31px;
   font-size: 1.5rem;
   font-family: sans-serif;
@@ -330,6 +331,10 @@ dialog.fugaso {
   //filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#373737", endColorstr="#312F2E", GradientType=1 );
   border: 2px solid black;
 
+  &#game_rules_v2 {
+    width: min(100vw, 1200px);
+  }
+
   header {
     padding: 24px;
     font-size: 1.5em;
@@ -339,6 +344,9 @@ dialog.fugaso {
   .content {
     margin: 1rem;
     display: flex;
+    max-height: 75vh;
+    overflow-y: auto;
+    outline: none;
 
     .column {
       flex: auto;
@@ -350,28 +358,30 @@ dialog.fugaso {
     justify-content: center;
     gap: 24px;
     margin: 24px;
-  }
-}
 
-dialog.fugaso {
-  footer button.cta {
-    color: black;
-    --background-color: #eee;
-    font-size: 1.2em;
-    border-radius: 12px;
-    padding: 0.4em 0.6em;
-    border: 4px outset var(--background-color);
-    background: var(--background-color);
+    button.cta {
+      color: black;
+      --background-color: #eee;
+      font-size: 1.2em;
+      border-radius: 12px;
+      padding: 0.4em 0.6em;
+      border: 4px outset var(--background-color);
+      background: var(--background-color);
 
-    &.error {
-      --background-color: #F44336;
-      color: white;
+      &:active {
+        border-style: inset;
+      }
+
+      &.error {
+        --background-color: #F44336;
+        color: white;
+      }
+
+      &.success {
+        --background-color: #8BC34A;
+        color: white;
+      }
+
     }
-
-    &.success {
-      --background-color: #8BC34A;
-      color: white;
-    }
-
   }
 }

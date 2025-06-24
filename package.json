@@ -4,8 +4,9 @@
   "main": "index.js",
   "scripts": {
     "build": "pug index.pug",
-    "sass": "sass",
-    "watch": "npm run build -- --watch",
+    "compile:sass": "sass shell/styles.scss shell/styles.css",
+    "watch:pug": "npm run build -- --watch",
+    "watch:sass": "npm run compile:sass -- --watch",
     "minify": ""
   },
   "author": "",

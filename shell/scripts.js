@@ -26,6 +26,21 @@ const GameShell = {
         GameShell.unityInstance.SendMessage('SoundManager', 'ToggleMute', `${sound_on}`);
     },
 
+    // region game rules
+    /**
+     * @returns {HTMLDialogElement}
+     */
+    get_game_rules_modal: () => {
+        return document.querySelector('dialog#game_rules_v2.fugaso');
+    },
+    show_game_rules: () => {
+        GameShell.get_game_rules_modal().showModal();
+    },
+    close_game_rules: () => {
+        GameShell.get_game_rules_modal().close();
+    },
+    // endregion
+
     /**
      * @returns {HTMLCanvasElement}
      */
@@ -103,19 +118,19 @@ const GameShell = {
     },
 
     // region game rules dialog
-    get_game_rules_dialog: () => {
-        return document.querySelector('dialog#game_rules')
-    },
-    show_game_rules: () => {
-        GameShell.collapse_quick_actions();
-        GameShell.get_game_rules_dialog().showModal()
-    },
-    hide_game_rules: (force = false) => {
-        if(event.target.id !== 'game_rules' && force === false){
-            return;
-        }
-        GameShell.get_game_rules_dialog().close();
-    },
+    // get_game_rules_dialog: () => {
+    //     return document.querySelector('dialog#game_rules')
+    // },
+    // show_game_rules: () => {
+    //     GameShell.collapse_quick_actions();
+    //     GameShell.get_game_rules_dialog().showModal()
+    // },
+    // hide_game_rules: (force = false) => {
+    //     if(event.target.id !== 'game_rules' && force === false){
+    //         return;
+    //     }
+    //     GameShell.get_game_rules_dialog().close();
+    // },
     // endregion
 
     // region language modal
