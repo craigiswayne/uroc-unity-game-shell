@@ -2,3 +2,5 @@
 node_modules/
 WebGLTemplates/
 index.html
+shell/styles.css
+shell/styles.css.map

@@ -170,7 +170,7 @@ const GameShell = {
         }
     ],
     get_language_modal: () => {
-        return document.querySelector('dialog#language-modal')
+        return document.querySelector('dialog#language_modal')
     },
     /**
      * @returns {HTMLImageElement}
