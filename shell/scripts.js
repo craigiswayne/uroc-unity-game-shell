@@ -13,7 +13,6 @@ const GameShell = {
             console.log('cannot find action', action_name)
             return;
         }
-        console.log('doing action', action_name)
         GameShell[action_name]();
     },
 
@@ -39,6 +38,7 @@ const GameShell = {
     },
     show_game_rules: () => {
         GameShell.get_game_rules_modal().showModal();
+        GameShell.collapse_quick_actions();
     },
     close_game_rules: () => {
         GameShell.get_game_rules_modal().close();
@@ -93,6 +93,7 @@ const GameShell = {
     get_quit_modal: () => document.querySelector('dialog#quit_modal'),
     show_quit_dialog: () => {
         GameShell.get_quit_modal().showModal();
+        GameShell.collapse_quick_actions();
     },
     hide_quit_dialog: () => {
         GameShell.get_quit_modal().close();
@@ -217,12 +218,36 @@ const GameShell = {
             GameShell.reload();
         });
         error_modal.showModal();
+        GameShell.collapse_quick_actions();
     },
     reload: () => {
         document.location.reload();
     },
     // endregion
 
+    // region bet amounts
+    /**
+     * @returns {HTMLDialogElement}
+     */
+    get_bet_amounts_modal:() => {
+        return document.querySelector('dialog#bet_amounts_modal');
+    },
+    show_bet_amounts:() => {
+        GameShell.get_bet_amounts_modal().showModal();
+        GameShell.collapse_quick_actions();
+    },
+    /**
+     *
+     * @param input_radio {HTMLInputElement}
+     */
+    set_bet: (input_radio) => {
+        GameShell.unityInstance.SendMessage('WagerManager', 'SetBet', `${input_radio.value}`);
+
+    },
+    close_bet_amounts:() => {
+        GameShell.get_bet_amounts_modal().close();
+    },
+    // endregion
     init: (unityInstance = null) => {
         this.unityInstance = unityInstance;
         document

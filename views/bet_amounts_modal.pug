@@ -1,0 +1,60 @@
+-
+    const bet_amounts = [
+        {
+            label: '$ 0.20',
+            active: false,
+            enabled: true
+        },
+        {
+            label: '$ 2.00',
+            active: true,
+            enabled: true
+        },
+        {
+            label: '$ 10.00',
+            active: false,
+            enabled: true
+        },
+        {
+            label: '$ 20.00',
+            active: false,
+            enabled: true
+        },
+        {
+            label: '$ 30.00',
+            active: false,
+            enabled: true
+        },
+        {
+            label: '$ 40.00',
+            active: false,
+            enabled: true
+        },
+        {
+            label: '$ 100.00',
+            active: false,
+            enabled: true
+        },
+        {
+            label: '$ 200.00',
+            active: false,
+            enabled: true
+        },
+        {
+            label: '$ 1000.00',
+            active: false,
+            enabled: true
+        }
+    ];
+dialog#bet_amounts_modal.fugaso
+    header BET AMOUNTS
+    .content
+        .grid.columns-2
+            - let i = 0
+            - let amounts = bet_amounts
+            while (i < amounts.length)
+                label= amounts[i].label
+                    input(type='radio' name='amounts' value=amounts[i].label checked=amounts[i].active onchange='GameShell.set_bet(this)')
+                - i++
+    footer
+        button.cta(onclick="GameShell.close_bet_amounts()") OK

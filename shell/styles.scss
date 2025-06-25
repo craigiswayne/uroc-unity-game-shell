@@ -4,6 +4,7 @@
 
 body {
   --color-secondary: #ffcc00;
+  --color-secondary-lighter: #FFF5CC;
   --background-mask: rgba(0, 0, 0, 0.8);
   width: 100vw;
   height: 100vh;
@@ -227,5 +228,33 @@ dialog.fugaso {
     font-size: 1.5em;
     margin: 0.5em 0 0 0;
     display: block;
+  }
+}
+
+label:has(input[type=radio]){
+  color: black;
+  --background-color: #9E9E9E;
+  font-size: 1.2em;
+  border-radius: 12px;
+  padding: 0.4em 0.6em;
+  border: 4px outset var(--background-color);
+  background: var(--background-color);
+  cursor: pointer;
+  display: inline-block;
+  width: 40%;
+  text-align: center;
+  margin: 0 0.5em 0.5em 0;
+
+  input[type=radio] {
+    visibility: hidden;
+    position: absolute;
+  }
+
+  &:hover {
+    --background-color: var(--color-secondary-lighter);
+  }
+
+  &:has(input[type=radio]:checked){
+    --background-color: var(--color-secondary);
   }
 }
