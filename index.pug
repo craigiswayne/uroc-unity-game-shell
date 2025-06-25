@@ -4,13 +4,17 @@ head
     meta(charset='utf-8')
     meta(http-equiv='Content-Type' content='text/html; charset=utf-8')
     //meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
-    link(rel='shortcut icon' href='TemplateData/favicon.ico')
+    link(rel='shortcut icon' href='https://ik.imagekit.io/bmp6bnlpn/uroc/uroc-logo-primary.svg?updatedAt=1750776072240')
     link(rel='stylesheet' href='TemplateData/style.css')
     | #if SHOW_DIAGNOSTICS
     link(rel='stylesheet' href='<<<TemplateData/diagnostics.css>>>')
     script(src='<<<TemplateData/diagnostics.js>>>')
     | #endif
+    | #if DEVELOPMENT_PLAYER
     link(rel='stylesheet' href='shell/styles.css')
+    | #else
+    link(rel='stylesheet' href='shell/styles.min.css')
+    | #endif
     script(src='shell/scripts.js' defer='')
 body
     #unity-container.unity-desktop

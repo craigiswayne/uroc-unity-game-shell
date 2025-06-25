@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "pug index.pug",
-    "compile:sass": "sass shell/styles.scss shell/styles.css",
-    "watch:pug": "npm run build -- --watch",
-    "watch:sass": "npm run compile:sass -- --watch",
-    "minify": ""
+    "build": "npm run compile:pug && npm run compile:sass",
+    "compile:pug": "pug index.pug",
+    "compile:sass": "sass shell/styles.scss shell/styles.min.css --no-source-map --style=compressed",
+    "compile:sass:dev": "sass shell/styles.scss shell/styles.css",
+    "watch:pug": "npm run compile:pug -- --watch",
+    "watch:sass": "npm run compile:sass:dev -- --watch"
   },
   "author": "",
   "license": "ISC",
