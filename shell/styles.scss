@@ -27,6 +27,13 @@ img {
   cursor: pointer;
 }
 
+img#unity-logo {
+  max-width: 154px;
+  max-height: 130px;
+  margin: auto;
+  display: block;
+}
+
 aside#quick-actions {
   visibility: visible !important;
   position: fixed;
