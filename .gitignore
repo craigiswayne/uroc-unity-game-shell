@@ -2,7 +2,7 @@
 node_modules/
 WebGLTemplates/
 index.html
-shell/styles.css
-shell/styles.css.map
-shell/styles.min.css
-shell/scripts.min.js
+TemplateData/shell.css
+TemplateData/shell.css.map
+TemplateData/shell.min.css
+TemplateData/shell.min.js

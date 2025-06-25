@@ -5,9 +5,9 @@
   "scripts": {
     "build": "npm run compile:pug && npm run compile:sass && minify:js",
     "compile:pug": "pug index.pug --pretty",
-    "compile:sass": "sass shell/styles.scss shell/styles.min.css --no-source-map --style=compressed",
-    "compile:sass:dev": "sass shell/styles.scss shell/styles.css",
-    "minify:js": "uglifyjs shell/scripts.js --output shell/scripts.min.js",
+    "compile:sass": "sass TemplateData/shell.scss TemplateData/shell.min.css --no-source-map --style=compressed",
+    "compile:sass:dev": "sass TemplateData/shell.scss TemplateData/shell.css",
+    "minify:js": "uglifyjs TemplateData/shell.js --output TemplateData/shell.min.js",
     "watch:pug": "npm run compile:pug -- --watch",
     "watch:sass": "npm run compile:sass:dev -- --watch"
   },
