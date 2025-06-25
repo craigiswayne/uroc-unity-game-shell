@@ -12,10 +12,11 @@ head
     | #endif
     | #if DEVELOPMENT_PLAYER
     link(rel='stylesheet' href='shell/styles.css')
+    script(src='shell/scripts.js' defer='')
     | #else
     link(rel='stylesheet' href='shell/styles.min.css')
+    script(src='shell/scripts.min.js' defer='')
     | #endif
-    script(src='shell/scripts.js' defer='')
 body
     #unity-container.unity-desktop
         canvas#unity-canvas(width="{{{ WIDTH }}" height="{{ HEIGHT }}}" tabindex="-1")
