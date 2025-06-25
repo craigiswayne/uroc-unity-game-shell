@@ -6,20 +6,24 @@ head
     //meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
     link(rel='shortcut icon' href='https://ik.imagekit.io/bmp6bnlpn/uroc/uroc-logo-primary.svg?updatedAt=1750776072240')
     link(rel='stylesheet' href='TemplateData/style.css')
+    |
     | #if SHOW_DIAGNOSTICS
-    link(rel='stylesheet' href='<<<TemplateData/diagnostics.css>>>')
-    script(src='<<<TemplateData/diagnostics.js>>>')
+    link(rel='stylesheet' href!="<<<TemplateData/diagnostics.css>>>")
+    script(src!='<<<TemplateData/diagnostics.js>>>')
+    |
     | #endif
     | #if DEVELOPMENT_PLAYER
     link(rel='stylesheet' href='shell/styles.css')
     script(src='shell/scripts.js' defer='')
+    |
     | #else
     link(rel='stylesheet' href='shell/styles.min.css')
     script(src='shell/scripts.min.js' defer='')
+    |
     | #endif
 body
     #unity-container.unity-desktop
-        canvas#unity-canvas(width="{{{ WIDTH }}" height="{{ HEIGHT }}}" tabindex="-1")
+        canvas#unity-canvas(width="{{{ WIDTH }}" height="{{{ HEIGHT }}}" tabindex="-1")
         #unity-loading-bar
             img#unity-logo(src='https://ik.imagekit.io/bmp6bnlpn/uroc/uroc-logo-primary.svg?updatedAt=1750776072240')
             #unity-progress-bar-empty
