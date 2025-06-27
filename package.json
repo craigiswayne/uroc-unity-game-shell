@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "npm run compile:pug && npm run compile:sass && minify:js",
+    "build": "npm run compile:pug && npm run compile:sass && npm run compile:sass:dev && minify:js",
     "compile:pug": "pug index.pug --pretty",
     "compile:sass": "sass TemplateData/shell.scss TemplateData/shell.min.css --no-source-map --style=compressed",
     "compile:sass:dev": "sass TemplateData/shell.scss TemplateData/shell.css",

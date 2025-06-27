@@ -22,7 +22,7 @@ const GameShell = {
         }
 
         const sound_on = event?.target?.checked ?? false;
-        GameShell.unityInstance.SendMessage('SoundManager', 'ToggleMute', `${sound_on}`);
+        GameShell.send_message_to_unity('toggleSound', { state: sound_on});
     },
 
     collapse_quick_actions: () => {
@@ -196,7 +196,7 @@ const GameShell = {
         }
         GameShell.current_language = requested_language;
         GameShell.close_language_modal();
-        GameShell.unityInstance.SendMessage('LanguageManager', 'Update', requested_language)
+        GameShell.send_message_to_unity('setLanguage', { language: requested_language, isSocial: false });
     },
     close_language_modal: (force = false) => {
         if(force){
@@ -217,6 +217,9 @@ const GameShell = {
             event.stopPropagation();
             GameShell.reload();
         });
+        if(error_text){
+            error_modal.querySelector('p').innerText = error_text;
+        }
         error_modal.showModal();
         GameShell.collapse_quick_actions();
     },
@@ -241,13 +244,23 @@ const GameShell = {
      * @param input_radio {HTMLInputElement}
      */
     set_bet: (input_radio) => {
-        GameShell.unityInstance.SendMessage('WagerManager', 'SetBet', `${input_radio.value}`);
-
+        GameShell.send_message_to_unity('setBet', { value: input_radio.value});
     },
     close_bet_amounts:() => {
         GameShell.get_bet_amounts_modal().close();
     },
     // endregion
+
+    /**
+     *
+     * @param command {string}
+     * @param payload {object}
+     */
+    send_message_to_unity: (command, payload) => {
+        const message = JSON.stringify({ command, payload });
+        GameShell.unityInstance.SendMessage('GameBridge', 'Pass', message);
+    },
+
     init: (unityInstance = null) => {
         this.unityInstance = unityInstance;
         document
