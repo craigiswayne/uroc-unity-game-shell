@@ -22,7 +22,7 @@ const GameShell = {
         }
 
         const sound_on = event?.target?.checked ?? false;
-        GameShell.send_message_to_unity('toggleSound', { state: sound_on});
+        GameShell.send_message_to_unity('mute', { state: sound_on});
     },
 
     collapse_quick_actions: () => {
@@ -244,7 +244,10 @@ const GameShell = {
      * @param input_radio {HTMLInputElement}
      */
     set_bet: (input_radio) => {
-        GameShell.send_message_to_unity('setBet', { value: input_radio.value});
+        GameShell.send_message_to_unity('setBet', {
+            label: input_radio.value,
+            value: input_radio.value.replace(/[^0-9\.]/g, ''),
+        });
     },
     close_bet_amounts:() => {
         GameShell.get_bet_amounts_modal().close();
