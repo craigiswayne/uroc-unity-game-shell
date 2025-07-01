@@ -283,6 +283,7 @@ const GameShell = {
             })
         }
         window.addEventListener('resize', GameShell.handle_resize);
+
     }
 }
 document.addEventListener('DOMContentLoaded', GameShell.init)

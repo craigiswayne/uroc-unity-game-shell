@@ -12,3 +12,10 @@ Based on the game ui from [Fugaso](https://fugaso.com)
 
 ### Documentation
 https://docs.unity3d.com/Manual/web-templates-add.html
+
+### Packaging:
+You will need the following files after a build
+
+* TemplateData
+* index.html
+* thumbnail.png
