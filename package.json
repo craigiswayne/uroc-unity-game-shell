@@ -2,12 +2,14 @@
   "name": "fugaso",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "build": "npm run compile:pug && npm run compile:sass && npm run compile:sass:dev && minify:js",
+    "build": "npm run compile:pug && npm run compile:sass && npm run compile:sass:dev && npm run minify:js && npm rune package",
     "compile:pug": "pug index.pug --pretty",
     "compile:sass": "sass TemplateData/shell.scss TemplateData/shell.min.css --no-source-map --style=compressed",
     "compile:sass:dev": "sass TemplateData/shell.scss TemplateData/shell.css",
     "minify:js": "uglifyjs TemplateData/shell.js --output TemplateData/shell.min.js",
+    "package": "node package.js",
     "watch:pug": "npm run compile:pug -- --watch",
     "watch:sass": "npm run compile:sass:dev -- --watch"
   },
@@ -15,6 +17,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "fs-extra": "^11.3.0",
+    "globby": "^14.1.0",
     "pug": "^3.0.3",
     "pug-cli": "^1.0.0-alpha6",
     "sass": "^1.89.2",

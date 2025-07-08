@@ -229,6 +229,78 @@ const GameShell = {
     // endregion
 
     // region bet amounts
+    get_bet_amounts: () => {
+        return [
+            {
+                label: '$ 0.22',
+                active: false,
+                enabled: true
+            },
+            {
+                label: '$ 2.00',
+                active: true,
+                enabled: true
+            },
+            {
+                label: '$ 10.00',
+                active: false,
+                enabled: true
+            },
+            {
+                label: '$ 20.00',
+                active: false,
+                enabled: true
+            },
+            {
+                label: '$ 30.00',
+                active: false,
+                enabled: true
+            },
+            {
+                label: '$ 40.00',
+                active: false,
+                enabled: true
+            },
+            {
+                label: '$ 100.00',
+                active: false,
+                enabled: true
+            },
+            {
+                label: '$ 200.00',
+                active: false,
+                enabled: true
+            },
+            {
+                label: '$ 1000.00',
+                active: false,
+                enabled: true
+            }
+        ];
+    },
+    populate_bet_amounts: () => {
+        const container = GameShell.get_bet_amounts_modal().querySelector('.grid.columns-2');
+        GameShell.get_bet_amounts()
+            .filter( i => i.enabled)
+            .forEach(i => {
+                const clickable = document.createElement('label');
+                clickable.innerText = i.label;
+
+                /**
+                 * @type {HTMLInputElement}
+                 */
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = 'amounts';
+                input.value = parseInt(i.label.replace(/[^0-9\.]/g, ''));
+                input.checked = i.active === true;
+                input.addEventListener('change', () => {
+                    GameShell.set_bet(input.value);
+                })
+                clickable.appendChild(input);
+                container.appendChild(clickable);
+            })
+    },
     /**
      * @returns {HTMLDialogElement}
      */
@@ -241,13 +313,17 @@ const GameShell = {
     },
     /**
      *
-     * @param input_radio {HTMLInputElement}
+     * @param value {number}
      */
-    set_bet: (input_radio) => {
+    set_bet: (value) => {
         GameShell.send_message_to_unity('setBet', {
-            label: input_radio.value,
-            value: input_radio.value.replace(/[^0-9\.]/g, ''),
+            value
         });
+        const existing_bet_amount_radio = GameShell.get_bet_amounts_modal().querySelector(`input[type=radio][value="${value}"]`);
+        if(!existing_bet_amount_radio){
+            return;
+        }
+        existing_bet_amount_radio.checked = true;
     },
     close_bet_amounts:() => {
         GameShell.get_bet_amounts_modal().close();
@@ -261,7 +337,11 @@ const GameShell = {
      */
     send_message_to_unity: (command, payload) => {
         const message = JSON.stringify({ command, payload });
-        GameShell.unityInstance.SendMessage('GameBridge', 'Pass', message);
+        try{
+            GameShell.unityInstance.SendMessage('GameBridge', 'Pass', message);
+        } catch (ex) {
+            console.warn(ex);
+        }
     },
 
     init: (unityInstance = null) => {
@@ -277,6 +357,8 @@ const GameShell = {
                 i.addEventListener('click', (event) => GameShell.do_action(i.dataset.action));
             })
 
+        GameShell.populate_bet_amounts();
+
         if (window['canvas']) {
             canvas.addEventListener('fullscreenchange', (event) => {
                 GameShell.is_fullscreen = document.fullscreenElement;
@@ -287,3 +369,7 @@ const GameShell = {
     }
 }
 document.addEventListener('DOMContentLoaded', GameShell.init)
+
+window.alert = (message) => {
+    console.log('Alert Swallowed:', message);
+}

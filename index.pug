@@ -1,4 +1,6 @@
 doctype html
+-
+    const cache_bust_query = Date.now().toString();
 html(lang='en-us')
     head
         title {{{ PRODUCT_NAME }}}
@@ -6,7 +8,6 @@ html(lang='en-us')
         meta(http-equiv='Content-Type' content='text/html; charset=utf-8')
         //meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
         link(rel='shortcut icon' href='https://ik.imagekit.io/bmp6bnlpn/uroc/uroc-logo-primary.svg?updatedAt=1750776072240')
-        link(rel='stylesheet' href='TemplateData/style.css')
         |
         | #if SHOW_DIAGNOSTICS
         link(rel='stylesheet' href!='<<<TemplateData/diagnostics.css>>>')
@@ -14,15 +15,15 @@ html(lang='en-us')
         |
         | #endif
         | #if DEVELOPMENT_PLAYER
-        link(rel='stylesheet' href='TemplateData/shell.css')
         script(src='https://cdn.jsdelivr.net/npm/lil-gui@0.20.0/dist/lil-gui.umd.min.js')
         link(href='https://cdn.jsdelivr.net/npm/lil-gui@0.20.0/dist/lil-gui.min.css' rel='stylesheet')
-        script(type='module' src='TemplateData/force-tool.js')
-        script(src='TemplateData/shell.js' defer='')
+        link(rel='stylesheet' href=`TemplateData/shell.css?v=${cache_bust_query}`)
+        script(src=`TemplateData/shell.js?v=${cache_bust_query}` defer='')
+        script(type='module' src=`TemplateData/force-tool.js?v=${cache_bust_query}`)
         |
         | #else
-        link(rel='stylesheet' href='TemplateData/shell.min.css')
-        script(src='TemplateData/shell.min.js' defer='')
+        link(rel='stylesheet' href=`TemplateData/shell.min.css?v=${cache_bust_query}`)
+        script(src=`TemplateData/shell.min.js?v=${cache_bust_query}` defer='')
         |
         | #endif
     body
@@ -107,8 +108,8 @@ html(lang='en-us')
                 // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
                 // canvas.style.width = '{{{ WIDTH }}}px';
                 // canvas.style.height = '{{{ HEIGHT }}}px';
-                canvas.style.width = (window.innerWidth / 100.0 * 90.0) + 'px';
-                canvas.style.height = (window.innerHeight / 100.0 * 90.0) + 'px';
+                // canvas.style.width = (window.innerWidth / 100.0 * 90.0) + 'px';
+                // canvas.style.height = (window.innerHeight / 100.0 * 90.0) + 'px';
             }
             #if BACKGROUND_FILENAME
                 canvas.style.background = "url('" + buildUrl + "/{{{ BACKGROUND_FILENAME.replace(/'/g, '%27') }}}') center / cover";

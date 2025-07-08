@@ -1,0 +1,334 @@
+h2(style='text-align:center' class="color-secondary") Paytable
+-
+  const PAY_TABLES = [
+      {
+          symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-0.png',
+          data: [
+              {
+                  count: 'x5',
+                  multiplier: 200
+              },
+              {
+                  count: 'x4',
+                  multiplier: 20
+              },
+              {
+                  count: 'x3',
+                  multiplier: 5
+              },
+              {
+                  count: 'x2',
+                  multiplier: 0.5
+              }
+          ]
+      },
+      {
+          symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-1.png',
+          data: [
+              {
+                  count: 'x5',
+                  multiplier: 100
+              },
+              {
+                  count: 'x4',
+                  multiplier: 15
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              },
+              {
+                  count: 'x0',
+                  multiplier: 3
+              }
+          ]
+      },
+      {
+          symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-2.png',
+          data: [
+              {
+                  count: 'x5',
+                  multiplier: 100
+              },
+              {
+                  count: 'x4',
+                  multiplier: 15
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              }
+          ]
+      },
+      {
+          symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-3.png',
+          data: [
+              {
+                  count: 'x5',
+                  multiplier: 100
+              },
+              {
+                  count: 'x4',
+                  multiplier: 15
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              }
+          ]
+      },
+      {
+          symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-4.png',
+          data: [
+              {
+                  count: 'x5',
+                  multiplier: 100
+              },
+              {
+                  count: 'x4',
+                  multiplier: 15
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              }
+          ]
+      },
+      {
+          symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-5.png',
+          data: [
+              {
+                  count: 'x5',
+                  multiplier: 100
+              },
+              {
+                  count: 'x4',
+                  multiplier: 15
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              }
+          ]
+      },
+      {
+          symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-6.png',
+          data: [
+              {
+                  count: 'x5',
+                  multiplier: 100
+              },
+              {
+                  count: 'x4',
+                  multiplier: 15
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              }
+          ]
+      },
+      {
+          symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-7.png',
+          data: [
+              {
+                  count: 'x5',
+                  multiplier: 100
+              },
+              {
+                  count: 'x4',
+                  multiplier: 15
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              }
+          ]
+      },
+      {
+          symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-8.png',
+          data: [
+              {
+                  count: 'x5',
+                  multiplier: 100
+              },
+              {
+                  count: 'x4',
+                  multiplier: 15
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              }
+          ]
+      },
+      {
+          symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-9.png',
+          data: [
+              {
+                  count: 'x5',
+                  multiplier: 100
+              },
+              {
+                  count: 'x4',
+                  multiplier: 15
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              }
+          ]
+      },
+      {
+          symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-10.png',
+          data: [
+              {
+                  count: 'x5',
+                  multiplier: 100
+              },
+              {
+                  count: 'x4',
+                  multiplier: 15
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              }
+          ]
+      },
+      {
+          symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-11.png',
+          data: [
+              {
+                  count: 'x5',
+                  multiplier: 100
+              },
+              {
+                  count: 'x4',
+                  multiplier: 15
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              },
+              {
+                  count: 'x3',
+                  multiplier: 3
+              }
+          ]
+      }
+  ]
+.grid.paytable
+    each paytable in PAY_TABLES
+        .item
+            div.symbol_container
+                img.symbol(src=paytable.symbol_url)
+            div.data
+                each row in paytable.data
+                    div.row
+                        div.count=row.count
+                        div.multiplier=row.multiplier
+
+style.
+    .grid.paytable {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3em 0.5em;
+        font-size: 0.9em;
+    }
+
+    @media (min-width: 600px) {
+        .grid.paytable {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (min-width: 800px) {
+        .grid.paytable {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    @media (min-width: 900px) {
+        .grid.paytable {
+            grid-template-columns: repeat(5, 1fr);
+        }
+    }
+
+
+    @media (min-width: 1200px) {
+        .grid.paytable {
+            grid-template-columns: repeat(6, 1fr);
+        }
+    }
+
+    .grid.paytable .item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .grid.paytable .item .symbol_container {
+        flex-grow: 1;
+        min-height: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: end;
+        margin-bottom: 0.5em;
+    }
+
+    .grid.paytable .item .symbol_container img.symbol {
+        max-width: 80px;
+        align-self: center;
+    }
+
+    .grid.paytable .item .data {
+        display: inline-flex;
+        flex-direction: column;
+        align-self: center;
+    }
+
+    .grid.paytable .item .data .row {
+        display: flex;
+    }
+
+    .grid.paytable .item .data .row .count {
+        color: yellow;
+        margin-right: 0.5em;
+    }

@@ -1,6 +1,6 @@
 .idea/
+dist/
 node_modules/
-WebGLTemplates/
 index.html
 TemplateData/shell.css
 TemplateData/shell.css.map
