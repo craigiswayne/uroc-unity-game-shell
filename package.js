@@ -56,7 +56,8 @@ const SOURCE_PATTERNS = [
     'TemplateData/**/*',
     'index.html',
     'thumbnail.png',
-    '!**/*.scss'
+    '!**/*.scss',
+    '!**/*.map'
 ];
 
 copyFilesWithGlob(SOURCE_PATTERNS, DESTINATION_DIR, process.cwd());

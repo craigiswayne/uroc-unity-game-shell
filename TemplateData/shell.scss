@@ -1,48 +1,3 @@
-// region STYLES FROM UNITY'S TEMPLATE
-#unity-container {
-  position: absolute
-}
-
-#unity-container.unity-desktop {
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%)
-}
-
-#unity-container.unity-mobile {
-  position: fixed;
-  width: 100%;
-  height: 100%
-}
-
-#unity-loading-bar {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: none
-}
-
-#unity-progress-bar-empty {
-  width: 141px;
-  height: 18px;
-  margin-top: 10px;
-  margin-left: 6.5px;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-#unity-progress-bar-full {
-  width: 0;
-  height: 18px;
-  margin-top: 10px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: white;
-}
-
-// endregion
-
 * {
   box-sizing: border-box;
 }
@@ -57,7 +12,10 @@ body {
   font-size: 16px;
   padding: 0;
   margin: 0;
-  background-color: #222;
+  background-color: black;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden;
 }
 
 img {
@@ -75,18 +33,46 @@ img {
   cursor: pointer;
 }
 
-.unity-mobile #unity-canvas {
-  width: 100%;
-  height: 100%
+#unity-loading-bar {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+
+  video {
+    max-height: 80vh;
+    display: block;
+  }
 }
 
-
-img#unity-logo {
-  max-width: 154px;
-  max-height: 130px;
-  margin: auto;
+#unity-canvas {
+  outline: none;
+  max-width: 100vw;
+  max-height: 100vh;
   display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  @media (min-aspect-ratio: 16/9) {
+      height: 100vh;
+      width: calc(100vh * (16 / 9));
+  }
+
+  /* When screen is narrower than 16:9 (portrait or narrow landscape) */
+  @media (max-aspect-ratio: 16/9) {
+      width: 100vw;
+      height: calc(100vw * (9 / 16));
+  }
+
+  /* When screen is exactly 16:9 */
+  @media (aspect-ratio: 16/9) {
+      width: 100vw;
+      height: 100vh;
+  }
 }
+
 
 aside#quick-actions {
   visibility: visible;
@@ -293,47 +279,49 @@ dialog.fugaso {
   }
 }
 
-label:has(input[type=radio]) {
-  color: black;
-  --background-color: #9E9E9E;
-  font-size: 1.2em;
-  border-radius: 12px;
-  padding: 0.4em 0.6em;
-  border: 4px outset var(--background-color);
-  background: var(--background-color);
-  cursor: pointer;
-  display: inline-block;
-  width: 40%;
-  text-align: center;
-  margin: 0 0.5em 0.5em 0;
-
-  input[type=radio] {
-    visibility: hidden;
-    position: absolute;
+#bet_amounts_modal {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.5em;
+    width: 100%;
+    padding: 0.5em;
   }
 
-  &:hover {
-    --background-color: var(--color-secondary-lighter);
-  }
+  label:has(input[type=radio]) {
+    color: black;
+    --background-color: #9E9E9E;
+    font-size: 1.2em;
+    border-radius: 12px;
+    padding: 0.4em 0.6em;
+    border: 4px outset var(--background-color);
+    background: var(--background-color);
+    cursor: pointer;
 
-  &:has(input[type=radio]:checked) {
-    --background-color: var(--color-secondary);
+    input[type=radio] {
+      visibility: hidden;
+      position: absolute;
+    }
+
+    &:hover {
+      --background-color: var(--color-secondary-lighter);
+    }
+
+    &:has(input[type=radio]:checked) {
+      --background-color: var(--color-secondary);
+    }
   }
 }
 
-@media screen and (max-aspect-ratio: 1.7) {
-  #unity-container {
-    width: 100vw !important;
-    height: 58.8235294118vw !important;
-    transform: translate(-50%, -50%);
-    position: fixed;
-    top: 50%;
-    left: 50%;
+@keyframes progress_circle {
+  from {
+    stroke-dashoffset: 1542.5219929125885;
   }
-
-
-  #unity-container canvas#unity-canvas {
-    width: 100% !important;
-    height: 100% !important;
+  to {
+    stroke-dashoffset: 0;
   }
+}
+
+#unity-loading-bar svg circle {
+  animation: progress_circle 3s linear forwards;
 }
