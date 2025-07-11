@@ -13,6 +13,10 @@ window.addEventListener('bet_levels_changed', () => {
     GameShell.populate_bet_levels();
 })
 
+window.addEventListener('pay_table_changed', () => {
+    GameShell.populate_pay_tables();
+})
+
 const GameShell = {
     lil_gui: null,
     unityInstance: null,
@@ -343,6 +347,300 @@ const GameShell = {
     },
     close_bet_levels:() => {
         GameShell.get_bet_levels_modal().close();
+    },
+    // endregion
+
+    // region pay tables
+    /**
+     * @type {[{symbol_url: string, data: [{count: string, multiplier: number}]}]}
+     */
+    pay_tables: [
+        {
+            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-0.png',
+            data: [
+                {
+                    count: 'x5',
+                    multiplier: 200
+                },
+                {
+                    count: 'x4',
+                    multiplier: 20
+                },
+                {
+                    count: 'x3',
+                    multiplier: 5
+                },
+                {
+                    count: 'x2',
+                    multiplier: 0.5
+                }
+            ]
+        },
+        {
+            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-1.png',
+            data: [
+                {
+                    count: 'x5',
+                    multiplier: 100
+                },
+                {
+                    count: 'x4',
+                    multiplier: 15
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                },
+                {
+                    count: 'x0',
+                    multiplier: 3
+                }
+            ]
+        },
+        {
+            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-2.png',
+            data: [
+                {
+                    count: 'x5',
+                    multiplier: 100
+                },
+                {
+                    count: 'x4',
+                    multiplier: 15
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                }
+            ]
+        },
+        {
+            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-3.png',
+            data: [
+                {
+                    count: 'x5',
+                    multiplier: 100
+                },
+                {
+                    count: 'x4',
+                    multiplier: 15
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                }
+            ]
+        },
+        {
+            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-4.png',
+            data: [
+                {
+                    count: 'x5',
+                    multiplier: 100
+                },
+                {
+                    count: 'x4',
+                    multiplier: 15
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                }
+            ]
+        },
+        {
+            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-5.png',
+            data: [
+                {
+                    count: 'x5',
+                    multiplier: 100
+                },
+                {
+                    count: 'x4',
+                    multiplier: 15
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                }
+            ]
+        },
+        {
+            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-6.png',
+            data: [
+                {
+                    count: 'x5',
+                    multiplier: 100
+                },
+                {
+                    count: 'x4',
+                    multiplier: 15
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                }
+            ]
+        },
+        {
+            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-7.png',
+            data: [
+                {
+                    count: 'x5',
+                    multiplier: 100
+                },
+                {
+                    count: 'x4',
+                    multiplier: 15
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                }
+            ]
+        },
+        {
+            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-8.png',
+            data: [
+                {
+                    count: 'x5',
+                    multiplier: 100
+                },
+                {
+                    count: 'x4',
+                    multiplier: 15
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                }
+            ]
+        },
+        {
+            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-9.png',
+            data: [
+                {
+                    count: 'x5',
+                    multiplier: 100
+                },
+                {
+                    count: 'x4',
+                    multiplier: 15
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                }
+            ]
+        },
+        {
+            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-10.png',
+            data: [
+                {
+                    count: 'x5',
+                    multiplier: 100
+                },
+                {
+                    count: 'x4',
+                    multiplier: 15
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                }
+            ]
+        },
+        {
+            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-11.png',
+            data: [
+                {
+                    count: 'x5',
+                    multiplier: 100
+                },
+                {
+                    count: 'x4',
+                    multiplier: 15
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                },
+                {
+                    count: 'x3',
+                    multiplier: 3
+                }
+            ]
+        }
+    ],
+    /**
+     * @returns {HTMLDivElement}
+     */
+    get_pay_tables_grid: () => {
+        return document.querySelector('.grid.paytable');
+    },
+    populate_pay_tables: () => {
+        const grid = GameShell.get_pay_tables_grid();
+        grid.innerHTML = '';
+        GameShell.pay_tables.forEach(pay_table => {
+            const item = document.createElement('div');
+            item.className = 'item';
+
+            const symbol_container = document.createElement('div');
+            symbol_container.className = 'symbol_container';
+            symbol_container.innerHTML = `<img class="symbol" src="${pay_table.symbol_url}" alt="pay table symbol" />`;
+
+            const data_container = document.createElement('div');
+            data_container.className = 'data';
+            pay_table.data.forEach(row => {
+                data_container.innerHTML += `
+                    <div class="row">
+                        <div class="count">${row.count}</div>
+                        <div class="multiplier">${row.multiplier}</div>
+                    </div>
+                `;
+
+            })
+            item.appendChild(symbol_container);
+            item.appendChild(data_container);
+            grid.appendChild(item);
+        })
+
     },
     // endregion
 
