@@ -331,6 +331,7 @@ dialog.fugaso {
   grid-template-columns: repeat(2, 1fr);
   gap: 3em 0.5em;
   font-size: 0.9em;
+  margin: 1em 0;
 
   @media (min-width: 600px) {
     grid-template-columns: repeat(3, 1fr);
@@ -384,3 +385,31 @@ dialog.fugaso {
     margin-right: 0.5em;
   }
 }
+
+#game_rules {
+  h2 {
+    text-align: center;
+  }
+}
+
+
+
+dialog.fugaso{
+  .content {
+    .symbol-explainer {
+      display: flex;
+      justify-content: center;
+
+      .column {
+        display: flex;
+        flex-direction: column;
+        flex: none;
+        align-items: center;
+        justify-content: center;
+        text-align: left;
+      }
+    }
+  }
+
+}
+

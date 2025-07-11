@@ -13,8 +13,8 @@ window.addEventListener('bet_levels_changed', (bet_levels_event) => {
     GameShell.populate_bet_levels();
 })
 
-window.addEventListener('pay_table_changed', (pay_table_changed_event) => {
-    GameShell.pay_tables = GameShell.format_pay_tables(ay_table_changed_event.detail.pay_table)
+window.addEventListener('pay_tables_changed', (pay_tables_changed) => {
+    GameShell.pay_tables = GameShell.format_pay_tables(pay_tables_changed.detail.pay_tables)
     GameShell.populate_pay_tables();
 })
 
@@ -645,7 +645,13 @@ const GameShell = {
     //
     // },
 
-    format_pay_tables: (pay_table_received_in_event) => {
+    format_pay_tables: (pay_tables_received_in_event) => {
+        GameShell.pay_tables = [];
+
+        if(pay_tables_received_in_event === undefined){
+            return;
+        }
+
         GameShell.pay_tables = [];
         // pay_table_received_in_event = [
         //     [ 0, 0, 0, 0, 0, 2000 ], // WC
@@ -685,7 +691,7 @@ const GameShell = {
             'C30'
         ]
 
-        const result = pay_table_received_in_event.map((multipliers, index) => {
+        const result = pay_tables_received_in_event.map((multipliers, index) => {
 
             // remove the first one, unused item in the array
             multipliers.shift();
@@ -706,9 +712,7 @@ const GameShell = {
             };
         })
 
-        console.log(result);
-
-        console.log(JSON.stringify(result));
+        return result;
 
     },
     populate_pay_tables: () => {
