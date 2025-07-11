@@ -9,11 +9,12 @@ window.addEventListener('time_out', () => {
     GameShell.show_error_popup('Your session has timed out')
 })
 
-window.addEventListener('bet_levels_changed', () => {
+window.addEventListener('bet_levels_changed', (bet_levels_event) => {
     GameShell.populate_bet_levels();
 })
 
-window.addEventListener('pay_table_changed', () => {
+window.addEventListener('pay_table_changed', (pay_table_changed_event) => {
+    GameShell.pay_tables = GameShell.format_pay_tables(ay_table_changed_event.detail.pay_table)
     GameShell.populate_pay_tables();
 })
 
@@ -354,280 +355,379 @@ const GameShell = {
     /**
      * @type {[{symbol_url: string, data: [{count: string, multiplier: number}]}]}
      */
-    pay_tables: [
-        {
-            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-0.png',
-            data: [
-                {
-                    count: 'x5',
-                    multiplier: 200
-                },
-                {
-                    count: 'x4',
-                    multiplier: 20
-                },
-                {
-                    count: 'x3',
-                    multiplier: 5
-                },
-                {
-                    count: 'x2',
-                    multiplier: 0.5
-                }
-            ]
-        },
-        {
-            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-1.png',
-            data: [
-                {
-                    count: 'x5',
-                    multiplier: 100
-                },
-                {
-                    count: 'x4',
-                    multiplier: 15
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                },
-                {
-                    count: 'x0',
-                    multiplier: 3
-                }
-            ]
-        },
-        {
-            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-2.png',
-            data: [
-                {
-                    count: 'x5',
-                    multiplier: 100
-                },
-                {
-                    count: 'x4',
-                    multiplier: 15
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                }
-            ]
-        },
-        {
-            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-3.png',
-            data: [
-                {
-                    count: 'x5',
-                    multiplier: 100
-                },
-                {
-                    count: 'x4',
-                    multiplier: 15
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                }
-            ]
-        },
-        {
-            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-4.png',
-            data: [
-                {
-                    count: 'x5',
-                    multiplier: 100
-                },
-                {
-                    count: 'x4',
-                    multiplier: 15
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                }
-            ]
-        },
-        {
-            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-5.png',
-            data: [
-                {
-                    count: 'x5',
-                    multiplier: 100
-                },
-                {
-                    count: 'x4',
-                    multiplier: 15
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                }
-            ]
-        },
-        {
-            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-6.png',
-            data: [
-                {
-                    count: 'x5',
-                    multiplier: 100
-                },
-                {
-                    count: 'x4',
-                    multiplier: 15
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                }
-            ]
-        },
-        {
-            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-7.png',
-            data: [
-                {
-                    count: 'x5',
-                    multiplier: 100
-                },
-                {
-                    count: 'x4',
-                    multiplier: 15
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                }
-            ]
-        },
-        {
-            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-8.png',
-            data: [
-                {
-                    count: 'x5',
-                    multiplier: 100
-                },
-                {
-                    count: 'x4',
-                    multiplier: 15
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                }
-            ]
-        },
-        {
-            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-9.png',
-            data: [
-                {
-                    count: 'x5',
-                    multiplier: 100
-                },
-                {
-                    count: 'x4',
-                    multiplier: 15
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                }
-            ]
-        },
-        {
-            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-10.png',
-            data: [
-                {
-                    count: 'x5',
-                    multiplier: 100
-                },
-                {
-                    count: 'x4',
-                    multiplier: 15
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                }
-            ]
-        },
-        {
-            symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-11.png',
-            data: [
-                {
-                    count: 'x5',
-                    multiplier: 100
-                },
-                {
-                    count: 'x4',
-                    multiplier: 15
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                },
-                {
-                    count: 'x3',
-                    multiplier: 3
-                }
-            ]
-        }
-    ],
+    // pay_tables: [
+    //     {
+    //         symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-0.png',
+    //         data: [
+    //             {
+    //                 count: 'x5',
+    //                 multiplier: 200
+    //             },
+    //             {
+    //                 count: 'x4',
+    //                 multiplier: 20
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 5
+    //             },
+    //             {
+    //                 count: 'x2',
+    //                 multiplier: 0.5
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-1.png',
+    //         data: [
+    //             {
+    //                 count: 'x5',
+    //                 multiplier: 100
+    //             },
+    //             {
+    //                 count: 'x4',
+    //                 multiplier: 15
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             },
+    //             {
+    //                 count: 'x0',
+    //                 multiplier: 3
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-2.png',
+    //         data: [
+    //             {
+    //                 count: 'x5',
+    //                 multiplier: 100
+    //             },
+    //             {
+    //                 count: 'x4',
+    //                 multiplier: 15
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-3.png',
+    //         data: [
+    //             {
+    //                 count: 'x5',
+    //                 multiplier: 100
+    //             },
+    //             {
+    //                 count: 'x4',
+    //                 multiplier: 15
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-4.png',
+    //         data: [
+    //             {
+    //                 count: 'x5',
+    //                 multiplier: 100
+    //             },
+    //             {
+    //                 count: 'x4',
+    //                 multiplier: 15
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-5.png',
+    //         data: [
+    //             {
+    //                 count: 'x5',
+    //                 multiplier: 100
+    //             },
+    //             {
+    //                 count: 'x4',
+    //                 multiplier: 15
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-6.png',
+    //         data: [
+    //             {
+    //                 count: 'x5',
+    //                 multiplier: 100
+    //             },
+    //             {
+    //                 count: 'x4',
+    //                 multiplier: 15
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-7.png',
+    //         data: [
+    //             {
+    //                 count: 'x5',
+    //                 multiplier: 100
+    //             },
+    //             {
+    //                 count: 'x4',
+    //                 multiplier: 15
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-8.png',
+    //         data: [
+    //             {
+    //                 count: 'x5',
+    //                 multiplier: 100
+    //             },
+    //             {
+    //                 count: 'x4',
+    //                 multiplier: 15
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-9.png',
+    //         data: [
+    //             {
+    //                 count: 'x5',
+    //                 multiplier: 100
+    //             },
+    //             {
+    //                 count: 'x4',
+    //                 multiplier: 15
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-10.png',
+    //         data: [
+    //             {
+    //                 count: 'x5',
+    //                 multiplier: 100
+    //             },
+    //             {
+    //                 count: 'x4',
+    //                 multiplier: 15
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         symbol_url: 'https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-11.png',
+    //         data: [
+    //             {
+    //                 count: 'x5',
+    //                 multiplier: 100
+    //             },
+    //             {
+    //                 count: 'x4',
+    //                 multiplier: 15
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             },
+    //             {
+    //                 count: 'x3',
+    //                 multiplier: 3
+    //             }
+    //         ]
+    //     }
+    // ],
+    pay_tables: [{"symbol":"WC","multipliers":[{"count":"x5","multiplier":20},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"AA","multipliers":[{"count":"x5","multiplier":20},{"count":"x4","multiplier":8},{"count":"x3","multiplier":4},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"BB","multipliers":[{"count":"x5","multiplier":8},{"count":"x4","multiplier":4},{"count":"x3","multiplier":2},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"CC","multipliers":[{"count":"x5","multiplier":1},{"count":"x4","multiplier":0.8},{"count":"x3","multiplier":0.5},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"DD","multipliers":[{"count":"x5","multiplier":0.75},{"count":"x4","multiplier":0.6},{"count":"x3","multiplier":0.4},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"EE","multipliers":[{"count":"x5","multiplier":0.75},{"count":"x4","multiplier":0.5},{"count":"x3","multiplier":0.3},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"FF","multipliers":[{"count":"x5","multiplier":0.75},{"count":"x4","multiplier":0.5},{"count":"x3","multiplier":0.3},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"GG","multipliers":[{"count":"x5","multiplier":0.6},{"count":"x4","multiplier":0.4},{"count":"x3","multiplier":0.2},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"HH","multipliers":[{"count":"x5","multiplier":0.6},{"count":"x4","multiplier":0.4},{"count":"x3","multiplier":0.2},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"JJ","multipliers":[{"count":"x5","multiplier":0.3},{"count":"x4","multiplier":0.2},{"count":"x3","multiplier":0.1},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"C01","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false},{"symbol":"C02","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false},{"symbol":"C03","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false},{"symbol":"C04","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false},{"symbol":"C05","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false},{"symbol":"C30","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false}],
     /**
      * @returns {HTMLDivElement}
      */
     get_pay_tables_grid: () => {
         return document.querySelector('.grid.paytable');
     },
+    // populate_pay_tables: () => {
+    //     const grid = GameShell.get_pay_tables_grid();
+    //     grid.innerHTML = '';
+    //     GameShell.pay_tables.forEach(pay_table => {
+    //         const item = document.createElement('div');
+    //         item.className = 'item';
+    //
+    //         const symbol_container = document.createElement('div');
+    //         symbol_container.className = 'symbol_container';
+    //         symbol_container.innerHTML = `<img class="symbol" src="${pay_table.symbol_url}" alt="pay table symbol" />`;
+    //
+    //         const data_container = document.createElement('div');
+    //         data_container.className = 'data';
+    //         pay_table.data.forEach(row => {
+    //             data_container.innerHTML += `
+    //                 <div class="row">
+    //                     <div class="count">${row.count}</div>
+    //                     <div class="multiplier">${row.multiplier}</div>
+    //                 </div>
+    //             `;
+    //
+    //         });
+    //         item.appendChild(symbol_container);
+    //         item.appendChild(data_container);
+    //         grid.appendChild(item);
+    //     })
+    //
+    // },
+
+    format_pay_tables: (pay_table_received_in_event) => {
+        GameShell.pay_tables = [];
+        // pay_table_received_in_event = [
+        //     [ 0, 0, 0, 0, 0, 2000 ], // WC
+        //     [ 0, 0, 0, 400, 800, 2000 ], // AA
+        //     [ 0, 0, 0, 200, 400, 800 ], // BB
+        //     [ 0, 0, 0, 50, 80, 100 ], // CC
+        //     [ 0, 0, 0, 40, 60, 75 ], // DD
+        //     [ 0, 0, 0, 30, 50, 75 ], // EE
+        //     [ 0, 0, 0, 30, 50, 75 ], // FF
+        //     [ 0, 0, 0, 20, 40, 60 ], // GG
+        //     [ 0, 0, 0, 20, 40, 60 ], // HH
+        //     [ 0, 0, 0, 10, 20, 30 ], // JJ
+        //     [ 0, 0, 0, 0, 0, 0 ], // C01
+        //     [ 0, 0, 0, 0, 0, 0 ], // C02
+        //     [ 0, 0, 0, 0, 0, 0 ], // C03
+        //     [ 0, 0, 0, 0, 0, 0 ], // C04
+        //     [ 0, 0, 0, 0, 0, 0 ], // C05
+        //     [ 0, 0, 0, 0, 0, 0 ], // C30
+        // ]
+
+        const symbol_map = [
+            'WC',
+            'AA',
+            'BB',
+            'CC',
+            'DD',
+            'EE',
+            'FF',
+            'GG',
+            'HH',
+            'JJ',
+            'C01',
+            'C02',
+            'C03',
+            'C04',
+            'C05',
+            'C30'
+        ]
+
+        const result = pay_table_received_in_event.map((multipliers, index) => {
+
+            // remove the first one, unused item in the array
+            multipliers.shift();
+            const multipliers_formatted = multipliers.map((amount, multiplier_index) => {
+                return {
+                    count: `x${multiplier_index+1}`,
+                    multiplier: amount / 100
+                }
+            });
+
+            const enabled = multipliers_formatted.any(i => i.multiplier !== 0);
+
+            return  {
+                symbol: symbol_map[index],
+                // we reverse it so that we can show the items in descending order
+                multipliers: multipliers_formatted.reverse(),
+                enabled: enabled
+            };
+        })
+
+        console.log(result);
+
+        console.log(JSON.stringify(result));
+
+    },
     populate_pay_tables: () => {
         const grid = GameShell.get_pay_tables_grid();
         grid.innerHTML = '';
         GameShell.pay_tables.forEach(pay_table => {
+            if(pay_table.enabled === false){
+                return
+            }
             const item = document.createElement('div');
             item.className = 'item';
 
             const symbol_container = document.createElement('div');
             symbol_container.className = 'symbol_container';
-            symbol_container.innerHTML = `<img class="symbol" src="${pay_table.symbol_url}" alt="pay table symbol" />`;
+            symbol_container.innerHTML = `<img class="symbol" src="https://placehold.co/80?text=${pay_table.symbol}" alt="pay table symbol" />`;
 
             const data_container = document.createElement('div');
             data_container.className = 'data';
-            pay_table.data.forEach(row => {
+            pay_table.multipliers.forEach(row => {
                 data_container.innerHTML += `
                     <div class="row">
                         <div class="count">${row.count}</div>
@@ -635,7 +735,7 @@ const GameShell = {
                     </div>
                 `;
 
-            })
+            });
             item.appendChild(symbol_container);
             item.appendChild(data_container);
             grid.appendChild(item);
@@ -660,6 +760,8 @@ const GameShell = {
 
     init: (unityInstance) => {
         GameShell.unityInstance = unityInstance;
+        // TODO: remove this once we receive the data from unity
+        GameShell.populate_pay_tables();
         document.querySelector('#unity-loading-bar').style.display = 'none';
         if(GameShell.lil_gui){
             GameShell.lil_gui.show();
