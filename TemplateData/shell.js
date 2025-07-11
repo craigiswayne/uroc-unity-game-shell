@@ -888,7 +888,7 @@ const GameShell = {
 
             const symbol_container = document.createElement('div');
             symbol_container.className = 'symbol_container';
-            symbol_container.innerHTML = `<img class="symbol" src="https://placehold.co/80?text=symbol-${pay_table.symbol_code}" alt="pay table symbol-${pay_table.symbol_number}" />`;
+            symbol_container.innerHTML = `<img class="symbol" src="https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-${pay_table.symbol_code}.png?updatedAt=1752246761900" alt="pay table symbol-${pay_table.symbol_number}" />`;
 
             const data_container = document.createElement('div');
             data_container.className = 'data';
