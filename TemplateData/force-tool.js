@@ -25,3 +25,5 @@ gui.add(force_tool_options, 'big_win');
 gui.add(force_tool_options, 'near_miss_3');
 gui.add(force_tool_options, 'near_miss_4');
 gui.add(force_tool_options, 'near_miss_5');
+gui.hide();
+GameShell.lil_gui = gui;

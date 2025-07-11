@@ -5,6 +5,7 @@
         console.log('time_out event received from unity');
     })
     const GameShell = {
+        lil_gui: null,
         unityInstance: null,
         toggle: (t) => {
             const parent = t.parentNode;
@@ -289,7 +290,7 @@
                     const input = document.createElement('input');
                     input.type = 'radio';
                     input.name = 'amounts';
-                    input.value = parseInt(i.label.replace(/[^0-9\.]/g, ''));
+                    input.value = parseInt(i.label.replace(/[^0-9.]/g, '')).toString();
                     input.checked = i.active && i.active === true;
                     if(input.checked){
                         GameShell.current_bet = input.value;
@@ -348,29 +349,30 @@
             }
         },
 
-        init: (unityInstance = null) => {
+        init: (unityInstance) => {
             this.unityInstance = unityInstance;
+            document.querySelector('#unity-loading-bar').style.display = 'none';
+            if(GameShell.lil_gui){
+                GameShell.lil_gui.show();
+            }
+            document.querySelector('#quick-actions').style.visibility = 'visible';
             document
                 .querySelectorAll('label.toggle input[type=checkbox]')
                 .forEach(i => {
-                    i.addEventListener('change', (event) => GameShell.toggle(i));
+                    i.addEventListener('change', () => GameShell.toggle(i));
                 })
             document
                 .querySelectorAll('.action[data-action]')
                 .forEach(i => {
-                    i.addEventListener('click', (event) => GameShell.do_action(i.dataset.action));
+                    i.addEventListener('click', () => GameShell.do_action(i.dataset.action));
                 })
             GameShell.populate_bet_amounts();
 
-            if (window['canvas']) {
-                canvas.addEventListener('fullscreenchange', (event) => {
-                    GameShell.is_fullscreen = document.fullscreenElement;
-                })
-            }
+            canvas.addEventListener('fullscreenchange', () => {
+                GameShell.is_fullscreen = document.fullscreenElement;
+            })
         }
     }
-    document.addEventListener('DOMContentLoaded', GameShell.init)
-
     window.alert = (message) => {
         console.log('Alert Swallowed:', message);
     }

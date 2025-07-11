@@ -10,10 +10,12 @@
     "compile:sass": "npm run compile:sass:prod && npm run compile:sass:dev",
     "compile:sass:prod": "sass TemplateData/shell.scss TemplateData/shell.min.css --no-source-map --style=compressed",
     "compile:sass:dev": "sass TemplateData/shell.scss TemplateData/shell.css",
+    "compile:ts": "tsc shell-ts.ts",
     "minify:js": "uglifyjs TemplateData/shell.js --output TemplateData/shell.min.js",
     "package": "node package.js",
     "watch:pug": "npm run compile:pug -- --watch",
-    "watch:sass": "npm run compile:sass:dev -- --watch"
+    "watch:sass": "npm run compile:sass:dev -- --watch",
+    "watch:ts": "npm run compile:ts -- --watch"
   },
   "author": "",
   "license": "ISC",
@@ -25,5 +27,9 @@
     "pug-cli": "^1.0.0-alpha6",
     "sass": "^1.89.2",
     "uglify-js": "^3.19.3"
+  },
+  "devDependencies": {
+    "lil-gui": "^0.20.0",
+    "typescript": "^5.8.3"
   }
 }

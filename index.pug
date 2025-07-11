@@ -95,11 +95,8 @@ html(lang='en-us')
             var script = document.createElement('script');
             script.src = loaderUrl;
             script.onload = () => {
-                createUnityInstance(canvas, config, (progress) => {
-                }).then((unityInstance) => {
-                    document.querySelector('#unity-loading-bar').style.display = 'none';
-                    GameShell.unityInstance = unityInstance;
-                    document.querySelector('#quick-actions').style.visibility = 'visible';
+                createUnityInstance(canvas, config, (progress) => {}).then((unityInstance) => {
+                    GameShell.init(unityInstance);
                 #if SHOW_DIAGNOSTICS
                     document.getElementById('diagnostics-icon').onclick = () => {
                         unityDiagnostics.openDiagnosticsDiv(unityInstance.GetMetricsInfo);
