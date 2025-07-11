@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "npm run compile:sass:dev && npm run build:prod",
+    "build": "node clean.js && npm run compile:sass:dev && npm run build:prod",
     "build:prod": "npm run compile:pug && npm run compile:sass && npm run minify:js && npm run package",
     "compile:pug": "pug index.pug --pretty",
     "compile:sass": "npm run compile:sass:prod && npm run compile:sass:dev",
