@@ -356,7 +356,6 @@ dialog.fugaso {
   }
 
   .item .symbol_container {
-    flex-grow: 1;
     min-height: 100px;
     display: flex;
     flex-direction: column;
@@ -371,6 +370,7 @@ dialog.fugaso {
   }
 
   .item .data {
+    flex-grow: 1;
     display: inline-flex;
     flex-direction: column;
     align-self: center;

@@ -14,7 +14,7 @@ window.addEventListener('bet_levels_changed', (bet_levels_event) => {
 })
 
 window.addEventListener('pay_tables_changed', (pay_tables_changed) => {
-    GameShell.pay_tables = GameShell.format_pay_tables(pay_tables_changed.detail.pay_tables)
+    GameShell.format_pay_tables(pay_tables_changed.detail.pay_tables)
     GameShell.populate_pay_tables();
 })
 
@@ -609,7 +609,150 @@ const GameShell = {
     //         ]
     //     }
     // ],
-    pay_tables: [{"symbol":"WC","multipliers":[{"count":"x5","multiplier":20},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"AA","multipliers":[{"count":"x5","multiplier":20},{"count":"x4","multiplier":8},{"count":"x3","multiplier":4},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"BB","multipliers":[{"count":"x5","multiplier":8},{"count":"x4","multiplier":4},{"count":"x3","multiplier":2},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"CC","multipliers":[{"count":"x5","multiplier":1},{"count":"x4","multiplier":0.8},{"count":"x3","multiplier":0.5},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"DD","multipliers":[{"count":"x5","multiplier":0.75},{"count":"x4","multiplier":0.6},{"count":"x3","multiplier":0.4},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"EE","multipliers":[{"count":"x5","multiplier":0.75},{"count":"x4","multiplier":0.5},{"count":"x3","multiplier":0.3},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"FF","multipliers":[{"count":"x5","multiplier":0.75},{"count":"x4","multiplier":0.5},{"count":"x3","multiplier":0.3},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"GG","multipliers":[{"count":"x5","multiplier":0.6},{"count":"x4","multiplier":0.4},{"count":"x3","multiplier":0.2},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"HH","multipliers":[{"count":"x5","multiplier":0.6},{"count":"x4","multiplier":0.4},{"count":"x3","multiplier":0.2},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"JJ","multipliers":[{"count":"x5","multiplier":0.3},{"count":"x4","multiplier":0.2},{"count":"x3","multiplier":0.1},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"C01","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false},{"symbol":"C02","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false},{"symbol":"C03","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false},{"symbol":"C04","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false},{"symbol":"C05","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false},{"symbol":"C30","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false}],
+    // pay_tables: [{"symbol":"WC","multipliers":[{"count":"x5","multiplier":20},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"AA","multipliers":[{"count":"x5","multiplier":20},{"count":"x4","multiplier":8},{"count":"x3","multiplier":4},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"BB","multipliers":[{"count":"x5","multiplier":8},{"count":"x4","multiplier":4},{"count":"x3","multiplier":2},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"CC","multipliers":[{"count":"x5","multiplier":1},{"count":"x4","multiplier":0.8},{"count":"x3","multiplier":0.5},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"DD","multipliers":[{"count":"x5","multiplier":0.75},{"count":"x4","multiplier":0.6},{"count":"x3","multiplier":0.4},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"EE","multipliers":[{"count":"x5","multiplier":0.75},{"count":"x4","multiplier":0.5},{"count":"x3","multiplier":0.3},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"FF","multipliers":[{"count":"x5","multiplier":0.75},{"count":"x4","multiplier":0.5},{"count":"x3","multiplier":0.3},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"GG","multipliers":[{"count":"x5","multiplier":0.6},{"count":"x4","multiplier":0.4},{"count":"x3","multiplier":0.2},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"HH","multipliers":[{"count":"x5","multiplier":0.6},{"count":"x4","multiplier":0.4},{"count":"x3","multiplier":0.2},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"JJ","multipliers":[{"count":"x5","multiplier":0.3},{"count":"x4","multiplier":0.2},{"count":"x3","multiplier":0.1},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":true},{"symbol":"C01","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false},{"symbol":"C02","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false},{"symbol":"C03","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false},{"symbol":"C04","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false},{"symbol":"C05","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false},{"symbol":"C30","multipliers":[{"count":"x5","multiplier":0},{"count":"x4","multiplier":0},{"count":"x3","multiplier":0},{"count":"x2","multiplier":0},{"count":"x1","multiplier":0}],"enabled":false}],
+    // pay_tables: [
+    //     {
+    //         "symbol": 0,
+    //         "count": 5,
+    //         "payout": 200
+    //     },
+    //     {
+    //         "symbol": 1,
+    //         "count": 3,
+    //         "payout": 40
+    //     },
+    //     {
+    //         "symbol": 1,
+    //         "count": 4,
+    //         "payout": 80
+    //     },
+    //     {
+    //         "symbol": 1,
+    //         "count": 5,
+    //         "payout": 200
+    //     },
+    //     {
+    //         "symbol": 2,
+    //         "count": 3,
+    //         "payout": 20
+    //     },
+    //     {
+    //         "symbol": 2,
+    //         "count": 4,
+    //         "payout": 40
+    //     },
+    //     {
+    //         "symbol": 2,
+    //         "count": 5,
+    //         "payout": 80
+    //     },
+    //     {
+    //         "symbol": 3,
+    //         "count": 3,
+    //         "payout": 5
+    //     },
+    //     {
+    //         "symbol": 3,
+    //         "count": 4,
+    //         "payout": 8
+    //     },
+    //     {
+    //         "symbol": 3,
+    //         "count": 5,
+    //         "payout": 10
+    //     },
+    //     {
+    //         "symbol": 4,
+    //         "count": 3,
+    //         "payout": 4
+    //     },
+    //     {
+    //         "symbol": 4,
+    //         "count": 4,
+    //         "payout": 6
+    //     },
+    //     {
+    //         "symbol": 4,
+    //         "count": 5,
+    //         "payout": 7
+    //     },
+    //     {
+    //         "symbol": 5,
+    //         "count": 3,
+    //         "payout": 3
+    //     },
+    //     {
+    //         "symbol": 5,
+    //         "count": 4,
+    //         "payout": 5
+    //     },
+    //     {
+    //         "symbol": 5,
+    //         "count": 5,
+    //         "payout": 7
+    //     },
+    //     {
+    //         "symbol": 6,
+    //         "count": 3,
+    //         "payout": 3
+    //     },
+    //     {
+    //         "symbol": 6,
+    //         "count": 4,
+    //         "payout": 5
+    //     },
+    //     {
+    //         "symbol": 6,
+    //         "count": 5,
+    //         "payout": 7
+    //     },
+    //     {
+    //         "symbol": 7,
+    //         "count": 3,
+    //         "payout": 2
+    //     },
+    //     {
+    //         "symbol": 7,
+    //         "count": 4,
+    //         "payout": 4
+    //     },
+    //     {
+    //         "symbol": 7,
+    //         "count": 5,
+    //         "payout": 6
+    //     },
+    //     {
+    //         "symbol": 8,
+    //         "count": 3,
+    //         "payout": 2
+    //     },
+    //     {
+    //         "symbol": 8,
+    //         "count": 4,
+    //         "payout": 4
+    //     },
+    //     {
+    //         "symbol": 8,
+    //         "count": 5,
+    //         "payout": 6
+    //     },
+    //     {
+    //         "symbol": 9,
+    //         "count": 3,
+    //         "payout": 1
+    //     },
+    //     {
+    //         "symbol": 9,
+    //         "count": 4,
+    //         "payout": 2
+    //     },
+    //     {
+    //         "symbol": 9,
+    //         "count": 5,
+    //         "payout": 3
+    //     }
+    // ],
+    pay_tables: [],
     /**
      * @returns {HTMLDivElement}
      */
@@ -646,13 +789,9 @@ const GameShell = {
     // },
 
     format_pay_tables: (pay_tables_received_in_event) => {
-        GameShell.pay_tables = [];
-
         if(pay_tables_received_in_event === undefined){
-            return;
+            return GameShell.pay_tables = [];
         }
-
-        GameShell.pay_tables = [];
         // pay_table_received_in_event = [
         //     [ 0, 0, 0, 0, 0, 2000 ], // WC
         //     [ 0, 0, 0, 400, 800, 2000 ], // AA
@@ -691,29 +830,51 @@ const GameShell = {
             'C30'
         ]
 
-        const result = pay_tables_received_in_event.map((multipliers, index) => {
+        // const result = pay_tables_received_in_event.map((multipliers, index) => {
+        //
+        //     // remove the first one, unused item in the array
+        //     multipliers.shift();
+        //     const multipliers_formatted = multipliers.map((amount, multiplier_index) => {
+        //         return {
+        //             count: `x${multiplier_index+1}`,
+        //             multiplier: amount / 100
+        //         }
+        //     });
+        //
+        //     const enabled = multipliers_formatted.any(i => i.multiplier !== 0);
+        //
+        //     return  {
+        //         symbol: symbol_map[index],
+        //         // we reverse it so that we can show the items in descending order
+        //         multipliers: multipliers_formatted.reverse(),
+        //         enabled: enabled
+        //     };
+        // })
+        const result = [];
 
-            // remove the first one, unused item in the array
-            multipliers.shift();
-            const multipliers_formatted = multipliers.map((amount, multiplier_index) => {
-                return {
-                    count: `x${multiplier_index+1}`,
-                    multiplier: amount / 100
-                }
-            });
+        pay_tables_received_in_event.forEach(item => {
+            const existing_group_index = result.findIndex( i => i.symbol_number === item.symbol);
 
-            const enabled = multipliers_formatted.any(i => i.multiplier !== 0);
-
-            return  {
-                symbol: symbol_map[index],
-                // we reverse it so that we can show the items in descending order
-                multipliers: multipliers_formatted.reverse(),
-                enabled: enabled
-            };
+            if(existing_group_index !== -1){
+                result[existing_group_index].multipliers.push({
+                    count: item.count,
+                    payout: item.payout
+                })
+            } else {
+                const new_group = {
+                    symbol_number: item.symbol,
+                    symbol_code: symbol_map[item.symbol] ?? 'unknown',
+                    multipliers: [{
+                        count: item.count,
+                        payout: item.payout
+                    }]
+                };
+                result.push(new_group);
+            }
         })
 
+        GameShell.pay_tables = result;
         return result;
-
     },
     populate_pay_tables: () => {
         const grid = GameShell.get_pay_tables_grid();
@@ -727,15 +888,15 @@ const GameShell = {
 
             const symbol_container = document.createElement('div');
             symbol_container.className = 'symbol_container';
-            symbol_container.innerHTML = `<img class="symbol" src="https://placehold.co/80?text=${pay_table.symbol}" alt="pay table symbol" />`;
+            symbol_container.innerHTML = `<img class="symbol" src="https://placehold.co/80?text=symbol-${pay_table.symbol_code}" alt="pay table symbol-${pay_table.symbol_number}" />`;
 
             const data_container = document.createElement('div');
             data_container.className = 'data';
             pay_table.multipliers.forEach(row => {
                 data_container.innerHTML += `
                     <div class="row">
-                        <div class="count">${row.count}</div>
-                        <div class="multiplier">${row.multiplier}</div>
+                        <div class="count">x${row.count}</div>
+                        <div class="multiplier">${row.payout}</div>
                     </div>
                 `;
 
@@ -764,8 +925,6 @@ const GameShell = {
 
     init: (unityInstance) => {
         GameShell.unityInstance = unityInstance;
-        // TODO: remove this once we receive the data from unity
-        GameShell.populate_pay_tables();
         document.querySelector('#unity-loading-bar').style.display = 'none';
         if(GameShell.lil_gui){
             GameShell.lil_gui.show();
