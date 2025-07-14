@@ -1,5 +1,6 @@
 import GUI from 'lil-gui';
 
+// @ts-ignore
 window.addEventListener('bet_changed', (bet_changed_event: CustomEvent) => {
     GameShell.set_bet(bet_changed_event.detail.amount);
 })
@@ -8,7 +9,8 @@ window.addEventListener('time_out', () => {
     GameShell.show_error_popup('Your session has timed out')
 })
 
-window.addEventListener('pay_tables_changed', (pay_tables_changed) => {
+// @ts-ignore
+window.addEventListener('pay_tables_changed', (pay_tables_changed: CustomEvent) => {
     GameShell.format_pay_tables(pay_tables_changed.detail.pay_tables)
     GameShell.populate_pay_tables();
 })
