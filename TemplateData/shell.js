@@ -872,7 +872,8 @@ const GameShell = {
                 result.push(new_group);
             }
         })
-
+        // Reverse the multiplier data so that it goes x5 ... x1
+        GameShell.pay_tables.map(i => { i.multipliers = i.multipliers.reverse(); return i});
         GameShell.pay_tables = result;
         return result;
     },
