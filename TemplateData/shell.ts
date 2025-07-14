@@ -1,22 +1,17 @@
-import GUI from 'lil-gui';
-
-// @ts-ignore
-window.addEventListener('bet_changed', (bet_changed_event: CustomEvent) => {
-    GameShell.set_bet(bet_changed_event.detail.amount);
-})
-
-window.addEventListener('time_out', () => {
-    GameShell.show_error_popup('Your session has timed out')
-})
-
-// @ts-ignore
-window.addEventListener('pay_tables_changed', (pay_tables_changed: CustomEvent) => {
-    GameShell.format_pay_tables(pay_tables_changed.detail.pay_tables)
-    GameShell.populate_pay_tables();
-})
-
-window.alert = (message) => {
-    console.log('Alert Swallowed:', message);
+interface OpenGameData {
+    betLevels: number[];
+    currency: {
+        code: string;
+        decimal: string;
+        denomination: number;
+        grouping: string;
+        precision: number;
+        prefix: string;
+        suffix: string;
+    };
+    defaultBet: number;
+    payTable: RawPayTables[];
+    rtpVersion: number;
 }
 
 interface UnityInstance {
@@ -37,108 +32,47 @@ interface RawPayTables {
     payout: number
 }
 
+type AvailableDialogs = 'game_rules' | 'quit_modal' | 'language_modal' | 'error_modal' | 'bet_levels_modal';
+
+// @ts-ignore
+window.addEventListener('bet_changed', (bet_changed_event: CustomEvent) => {
+    GameShell.set_bet(bet_changed_event.detail.amount);
+})
+
+window.addEventListener('time_out', () => {
+    GameShell.show_error_popup('Your session has timed out')
+})
+
+// @ts-ignore
+window.addEventListener('open_game_data', (open_game_data: CustomEvent<OpenGameData>) => {
+    GameShell.current_bet = open_game_data.detail.defaultBet;
+    GameShell.bet_levels = open_game_data.detail.betLevels;
+
+    GameShell.set_currency_symbol(open_game_data.detail.currency.code)
+        .then(GameShell.populate_bet_levels);
+    GameShell.format_pay_tables(open_game_data.detail.payTable)
+        .then(GameShell.populate_pay_tables);
+
+    GameShell.update_rtp(open_game_data.detail.rtpVersion);
+})
+
+window.alert = (message) => {
+    console.log('Alert Swallowed:', message);
+}
+
 class GameShell {
+    // @ts-ignore
     public static lil_gui?: GUI;
     public static unityInstance?: UnityInstance;
-
-    public static toggle(t: HTMLInputElement) {
-        const parent = t.parentNode! as HTMLElement;
-        const callback_name = parent.dataset.callback;
-
-        // @ts-ignore
-        if (callback_name && typeof GameShell[callback_name] === 'function') {
-            // @ts-ignore
-            GameShell[callback_name]();
-        }
-    }
-
-    public static toggle_sounds(input_element: HTMLInputElement) {
-        const sound_on = input_element.checked ?? false;
-        GameShell.send_message_to_unity('mute', { state: sound_on});
-    }
-
-    public static collapse_quick_actions() {
-        document.querySelector<HTMLInputElement>('#toggle_menu input[type=checkbox]')!.checked = false;
-    }
-
-    // TODO: use this
-    public static get_dialog_by_id(id_selector: string): HTMLDialogElement {
-        return document.querySelector<HTMLDialogElement>(id_selector)!;
-    }
-    public static get_game_rules_modal(): HTMLDialogElement {
-        return document.querySelector<HTMLDialogElement>('dialog#game_rules.fugaso')!;
-    }
-    public static show_game_rules() {
-        GameShell.get_game_rules_modal().showModal();
-        GameShell.collapse_quick_actions();
-    }
-    public static close_game_rules() {
-        GameShell.get_game_rules_modal().close();
-    }
-    public static get_unity_canvas() {
-        return document.getElementById('unity-canvas');
-    }
-
+    public static rtp = 100;
     public static is_fullscreen = false;
-    // fullscreen_with_shell: () => {
-    //     if (document.fullscreenElement === null) {
-    //         const element = document.documentElement;
-    //         if (element.requestFullscreen) {
-    //             element.requestFullscreen();
-    //             GameShell.is_fullscreen = true;
-    //         }
-    //     } else {
-    //         if (document.exitFullscreen) {
-    //             document.exitFullscreen();
-    //             GameShell.is_fullscreen = false;
-    //         }
-    //     }
-    // },
-    // toggle_fullscreen: () => {
-    //     if (!GameShell.unityInstance) {
-    //         return;
-    //     }
-    //     if (!GameShell.is_fullscreen) {
-    //         GameShell.unityInstance.SetFullscreen(1);
-    //     } else {
-    //         GameShell.unityInstance.SetFullscreen(0);
-    //     }
-    //     GameShell.is_fullscreen = !GameShell.is_fullscreen;
-    // },
-
-    public static get_quit_modal() {
-        return document.querySelector<HTMLDialogElement>('dialog#quit_modal')!;
-    }
-    public static show_quit_dialog() {
-        GameShell.get_quit_modal().showModal();
-        GameShell.collapse_quick_actions();
-    }
-
-    public hide_quit_dialog() {
-        GameShell.get_quit_modal().close();
-    }
-    public static quit_confirm() {
-        try {
-            // @ts-ignore
-            GameShell.unityInstance.Quit()
-                .then(() => {
-                    // Remove DOM elements from the page so GC can run
-                    document.querySelector<HTMLDivElement>("#unity-container")!.remove();
-                    // @ts-ignore
-                    canvas = null;
-                    // Remover script elements from the page so GC can run
-                    // @ts-ignore
-                    script.remove();
-                    // @ts-ignore
-                    script = null;
-                    document.location.href = 'https://www.uroc.com'
-                });
-        } catch (ex){
-            console.log(ex);
-        }
-
-    }
     public static current_language = 'en';
+    public static currency_symbol = '$';
+    public static current_bet = 0;
+    public static bet_levels: number[] = [];
+    public static pay_tables: FormattedPayTables[] = [];
+    public static asset_url = '';
+
     /**
      * @see https://flagicons.lipis.dev/
      */
@@ -164,26 +98,117 @@ class GameShell {
             'label': '中国人'
         }
     ];
-    public static get_language_modal(): HTMLDialogElement {
-        return document.querySelector<HTMLDialogElement>('dialog#language_modal')!;
+
+    public static async update_rtp(value: number): Promise<void> {
+        this.rtp = value;
+        document.querySelector<HTMLSpanElement>('.bind.rtp')!.innerText = `${this.rtp}%`;
     }
+
+    public static toggle(t: HTMLInputElement) {
+        const parent = t.parentNode! as HTMLElement;
+        const callback_name = parent.dataset.callback;
+
+        // @ts-ignore
+        if (callback_name && typeof GameShell[callback_name] === 'function') {
+            // @ts-ignore
+            GameShell[callback_name]();
+        }
+    }
+
+    public static toggle_sounds(input_element: HTMLInputElement) {
+        const sound_on = input_element.checked ?? false;
+        GameShell.send_message_to_unity('mute', { state: sound_on});
+    }
+
+    public static collapse_quick_actions() {
+        document.querySelector<HTMLInputElement>('#toggle_menu input[type=checkbox]')!.checked = false;
+    }
+
+    // TODO: use this
+    public static get_dialog_by_id(id_selector: AvailableDialogs): HTMLDialogElement {
+        return document.querySelector<HTMLDialogElement>(`dialog#${id_selector}.fugaso`)!;
+    }
+
+    public static show_dialog_by_id(id_selector: AvailableDialogs) {
+        GameShell.get_dialog_by_id(id_selector).showModal();
+        GameShell.collapse_quick_actions();
+    }
+
+    public static close_dialog_by_id(id_selector: AvailableDialogs) {
+        GameShell.get_dialog_by_id(id_selector).close();
+    }
+
+    public static get_unity_canvas() {
+        return document.getElementById('unity-canvas');
+    }
+
+    // fullscreen_with_shell: () => {
+    //     if (document.fullscreenElement === null) {
+    //         const element = document.documentElement;
+    //         if (element.requestFullscreen) {
+    //             element.requestFullscreen();
+    //             GameShell.is_fullscreen = true;
+    //         }
+    //     } else {
+    //         if (document.exitFullscreen) {
+    //             document.exitFullscreen();
+    //             GameShell.is_fullscreen = false;
+    //         }
+    //     }
+    // },
+    public static toggle_fullscreen() {
+        if (!GameShell.unityInstance) {
+            console.log('No unity instance to toggle fullscreen on.')
+            return;
+        }
+        if (!GameShell.is_fullscreen) {
+            GameShell.unityInstance.SetFullscreen(1);
+        } else {
+            GameShell.unityInstance.SetFullscreen(0);
+        }
+        GameShell.is_fullscreen = !GameShell.is_fullscreen;
+    }
+
+    public static quit_confirm() {
+        try {
+            // @ts-ignore
+            GameShell.unityInstance.Quit()
+                .then(() => {
+                    // Remove DOM elements from the page so GC can run
+                    document.querySelector<HTMLDivElement>("#unity-container")!.remove();
+                    // @ts-ignore
+                    canvas = null;
+                    // Remover script elements from the page so GC can run
+                    // @ts-ignore
+                    script.remove();
+                    // @ts-ignore
+                    script = null;
+                    document.location.href = 'https://www.uroc.com'
+                });
+        } catch (ex){
+            console.log(ex);
+        }
+
+    }
+
     public static get_language_modal_flag(): HTMLImageElement {
-        return GameShell.get_language_modal().querySelector<HTMLImageElement>('img.flag')!;
+        return GameShell.get_dialog_by_id('language_modal').querySelector<HTMLImageElement>('img.flag')!;
     }
 
     public static get_language_modal_label(): HTMLLabelElement {
-        return GameShell.get_language_modal().querySelector<HTMLLabelElement>('label')!;
+        return GameShell.get_dialog_by_id('language_modal').querySelector<HTMLLabelElement>('label')!;
     }
 
     public static get_requested_language(): string {
         // @ts-ignore
         return GameShell.get_language_modal_flag()
-            .getAttribute('src')
+            .getAttribute('src')!
             .split('/')
             .pop()
             .split('.')
             .shift();
     }
+
     public static previous_language(): void {
         const current_index = GameShell.available_languages.findIndex(i => i.code === GameShell.get_requested_language())
         const index_to_use = (current_index -1 + GameShell.available_languages.length) % GameShell.available_languages.length;
@@ -204,10 +229,6 @@ class GameShell {
             i.src = `https://ik.imagekit.io/bmp6bnlpn/flags/${language_code}.svg?updatedAt=1750776194371`;
         })
     }
-    public static show_language_modal(): void {
-        GameShell.get_language_modal().showModal();
-        GameShell.collapse_quick_actions();
-    }
     public static update_language(): void {
         const requested_language = GameShell.get_requested_language();
         if(requested_language === GameShell.current_language){
@@ -226,16 +247,16 @@ class GameShell {
             GameShell.get_language_modal_label().innerText = GameShell.available_languages[index_to_use].label;
             GameShell.update_flag_image_elements(language_to_use);
         }
-        GameShell.get_language_modal().close();
+        GameShell.get_dialog_by_id('language_modal').close();
     }
 
-    public static show_error_popup(error_text = ''): void {
-        const error_modal = document.querySelector<HTMLDialogElement>('dialog#error_modal')!;
-        error_modal.addEventListener('cancel', event => {
+    public static async show_error_popup(error_text = ''): Promise<void> {
+        const error_modal = GameShell.get_dialog_by_id('error_modal');
+        error_modal.oncancel = event => {
             event.preventDefault();
             event.stopPropagation();
             GameShell.reload();
-        });
+        }
         if(error_text){
             error_modal.querySelector('p')!.innerText = error_text;
         }
@@ -246,68 +267,20 @@ class GameShell {
         document.location.reload();
     }
 
-    public static current_bet = 0;
-    // TODO remove this
-    public static bet_levels: {label: string, active?: boolean}[] = [
-        {
-            label: '$ 20.00'
-        },
-        {
-            label: '$ 30.00'
-        },
-        {
-            label: '$ 40.00'
-        },
-        {
-            label: '$ 50.00'
-        },
-        {
-            label: '$ 60.00'
-        },
-        {
-            label: '$ 80.00'
-        },
-        {
-            label: '$ 100.00'
-        },
-        {
-            label: '$ 160.00'
-        },
-        {
-            label: '$ 200.00',
-            active: true
-        },
-        {
-            label: '$ 240.00'
-        },
-        {
-            label: '$ 300.00'
-        },
-        {
-            label: '$ 400.00'
-        },
-        {
-            label: '$ 500.00'
-        }
-    ];
     public static populate_bet_levels(): void {
-        const container = GameShell.get_bet_levels_modal().querySelector('.grid')!;
+        const container = GameShell.get_dialog_by_id('bet_levels_modal').querySelector('.grid')!;
         container.innerHTML = '';
         GameShell.bet_levels
-            // .filter( i => i.enabled === undefined || i.enabled === true)
-            .forEach(i => {
+            .forEach(amount => {
                 const clickable: HTMLLabelElement = document.createElement('label');
-                clickable.innerText = i.label;
+                clickable.innerText = `${GameShell.currency_symbol} ${amount}`;
 
                 const input: HTMLInputElement = document.createElement('input');
-                const value = parseInt(i.label.replace(/[^0-9.]/g, ''))
+                const value = amount
                 input.type = 'radio';
                 input.name = 'amounts';
                 input.value = value.toString();
-                input.checked = i.active !== undefined && i.active;
-                if(input.checked){
-                    GameShell.current_bet = value;
-                }
+                input.checked = GameShell.current_bet === amount;
                 input.addEventListener('change', () => {
                     GameShell.set_bet(value);
                 })
@@ -315,39 +288,29 @@ class GameShell {
                 container.appendChild(clickable);
             })
     }
-    public static get_bet_levels_modal(): HTMLDialogElement {
-        return document.querySelector('dialog#bet_levels_modal')!;
-    }
-    public static show_bet_levels(): void {
-        GameShell.get_bet_levels_modal().showModal();
-        GameShell.collapse_quick_actions();
-    }
 
-    public static set_bet(value: number): void {
+    public static async set_bet(value: number): Promise<void> {
         if(value.toString() === GameShell.current_bet.toString()){
             return;
         }
         GameShell.current_bet = value;
         GameShell.send_message_to_unity('setBet', {value});
-        const existing_bet_level_radio = GameShell.get_bet_levels_modal().querySelector<HTMLInputElement>(`input[type=radio][value="${value}"]`);
+        const existing_bet_level_radio = GameShell.get_dialog_by_id('bet_levels_modal').querySelector<HTMLInputElement>(`input[type=radio][value="${value}"]`);
         if(!existing_bet_level_radio){
             return;
         }
         existing_bet_level_radio.checked = true;
 
-    };
-    public static close_bet_levels(): void {
-        GameShell.get_bet_levels_modal().close();
     }
 
-    public static pay_tables: FormattedPayTables[] = [];
-    public static get_pay_tables_grid(): HTMLDialogElement {
-        return document.querySelector<HTMLDialogElement>('.grid.paytable')!;
+    public static get_pay_tables_grid(): HTMLDivElement {
+        return document.querySelector<HTMLDivElement>('.grid.paytable')!;
     }
 
-    public static format_pay_tables(pay_tables_received_in_event: RawPayTables[]): FormattedPayTables[] {
+    public static async format_pay_tables(pay_tables_received_in_event: RawPayTables[]): Promise<FormattedPayTables[]> {
         if(pay_tables_received_in_event === undefined){
-            return GameShell.pay_tables = [];
+            GameShell.pay_tables = [];
+            return Promise.resolve(GameShell.pay_tables);
         }
 
         const symbol_map = [
@@ -397,7 +360,7 @@ class GameShell {
         // Reverse the multiplier data so that it goes x5 ... x1
         result.map(i => { i.multipliers = i.multipliers.reverse(); return i});
         GameShell.pay_tables = result;
-        return result;
+        return Promise.resolve(GameShell.pay_tables);
     }
 
     public static populate_pay_tables(): void {
@@ -409,7 +372,7 @@ class GameShell {
 
             const symbol_container = document.createElement('div');
             symbol_container.className = 'symbol_container';
-            symbol_container.innerHTML = `<img class="symbol" src="https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-${pay_table.symbol_code}.png?updatedAt=1752246761900" alt="pay table symbol-${pay_table.symbol_number}" />`;
+            symbol_container.innerHTML = `<img class="symbol" src="https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-${pay_table.symbol_code}.png?updatedAt=1752504727975" alt="pay table symbol-${pay_table.symbol_number}" />`;
 
             const data_container = document.createElement('div');
             data_container.className = 'data';
@@ -439,6 +402,21 @@ class GameShell {
         } catch (ex) {
             console.warn(ex);
         }
+    }
+
+    public static async set_currency_symbol(iso_code: string): Promise<void> {
+        switch(iso_code){
+            case 'USD':
+                GameShell.currency_symbol = '$';
+                break;
+            case 'EUR':
+                GameShell.currency_symbol = '€';
+                break;
+            default:
+                GameShell.currency_symbol = '£';
+                break;
+        }
+        return Promise.resolve();
     }
 
 

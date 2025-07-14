@@ -374,11 +374,6 @@ dialog.fugaso {
     margin-bottom: 0.5em;
   }
 
-  .item .symbol_container img.symbol {
-    max-width: 80px;
-    align-self: center;
-  }
-
   .item .data {
     flex-grow: 1;
     display: inline-flex;
@@ -420,6 +415,9 @@ dialog.fugaso{
       }
     }
   }
-
 }
 
+img.symbol {
+  max-width: 80px;
+  align-self: center;
+}

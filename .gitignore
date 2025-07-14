@@ -3,6 +3,7 @@ dist/
 node_modules/
 index.html
 TemplateData/shell.css
-TemplateData/shell.css.map
+TemplateData/*.map
 TemplateData/shell.min.css
+TemplateData/shell.js
 TemplateData/shell.min.js

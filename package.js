@@ -53,11 +53,13 @@ async function copyFilesWithGlob(sourceGlobs, destinationDir, baseDirectory = pr
 }
 
 const SOURCE_PATTERNS = [
-    'TemplateData/**/*',
+    'TemplateData/force-tool.js',
+    'TemplateData/shell.min.css',
+    'TemplateData/shell.min.css.map',
+    'TemplateData/shell.min.js',
+    'TemplateData/webmemd-icon.png',
     'index.html',
-    'thumbnail.png',
-    '!**/*.scss',
-    '!**/*.map'
+    'thumbnail.png'
 ];
 
 copyFilesWithGlob(SOURCE_PATTERNS, DESTINATION_DIR, process.cwd());

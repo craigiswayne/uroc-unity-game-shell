@@ -17,15 +17,8 @@ html(lang='en-us')
         script(src='https://cdn.jsdelivr.net/npm/lil-gui@0.20.0/dist/lil-gui.umd.min.js')
         link(href='https://cdn.jsdelivr.net/npm/lil-gui@0.20.0/dist/lil-gui.min.css' rel='stylesheet')
         |
-        | #if DEVELOPMENT_PLAYER
-        link(rel='stylesheet' href=`TemplateData/shell.css?v=${cache_bust_query}`)
-        script(src=`TemplateData/shell.js?v=${cache_bust_query}` defer='')
-        |
-        | #else
         link(rel='stylesheet' href=`TemplateData/shell.min.css?v=${cache_bust_query}`)
         script(src=`TemplateData/shell.min.js?v=${cache_bust_query}` defer='')
-        |
-        | #endif
         script(type='module' src=`TemplateData/force-tool.js?v=${cache_bust_query}`)
     body
         #unity-container.unity-desktop
