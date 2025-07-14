@@ -412,6 +412,10 @@ dialog.fugaso{
         align-items: center;
         justify-content: center;
         text-align: left;
+
+        &.content {
+          max-width: calc(100% - 100px);
+        }
       }
     }
   }
