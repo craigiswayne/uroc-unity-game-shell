@@ -75,7 +75,6 @@ img {
 
 
 aside#quick-actions {
-  visibility: visible;
   position: fixed;
   top: 0;
   right: 0;
@@ -85,6 +84,17 @@ aside#quick-actions {
   padding: 1rem 0.5rem 0 0.5rem;
   border-radius: 0 0 0 10px;
   user-select: none;
+  transition: all 0.3s ease;
+  transform: translateY(-10px);
+  visibility: hidden;
+  opacity: 0;
+
+  &.active {
+    transform: translateY(0);
+    visibility: visible;
+    opacity: 1;
+  }
+
 
   .toggle,
   a,

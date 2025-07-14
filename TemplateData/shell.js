@@ -470,7 +470,7 @@ const GameShell = {
         if(GameShell.lil_gui){
             GameShell.lil_gui.show();
         }
-        document.querySelector('#quick-actions').style.visibility = 'visible';
+        document.querySelector('#quick-actions').classList.add('active');
         document
             .querySelectorAll('label.toggle input[type=checkbox]')
             .forEach(i => {
