@@ -18,6 +18,10 @@ window.addEventListener('pay_tables_changed', (pay_tables_changed) => {
     GameShell.populate_pay_tables();
 })
 
+window.alert = (message) => {
+    console.log('Alert Swallowed:', message);
+}
+
 const GameShell = {
     lil_gui: null,
     unityInstance: null,
@@ -29,15 +33,9 @@ const GameShell = {
             GameShell[callback_name]();
         }
     },
-    do_action: (action_name) => {
-        if (GameShell[action_name] === undefined) {
-            console.log('cannot find action', action_name)
-            return;
-        }
-        GameShell[action_name]();
-    },
 
-    toggle_sounds: () => {
+    toggle_sounds: (el) => {
+        debugger;
         if (!GameShell.unityInstance) {
             return;
         }
@@ -476,18 +474,8 @@ const GameShell = {
             .forEach(i => {
                 i.addEventListener('change', () => GameShell.toggle(i));
             })
-        document
-            .querySelectorAll('.action[data-action]')
-            .forEach(i => {
-                i.addEventListener('click', () => GameShell.do_action(i.dataset.action));
-            })
-        GameShell.populate_bet_levels();
-
         canvas.addEventListener('fullscreenchange', () => {
             GameShell.is_fullscreen = document.fullscreenElement;
         })
     }
-}
-window.alert = (message) => {
-    console.log('Alert Swallowed:', message);
 }
