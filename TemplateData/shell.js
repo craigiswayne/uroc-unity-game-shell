@@ -455,7 +455,7 @@ const GameShell = {
      * @param command {string}
      * @param payload {object}
      */
-    send_message_to_unity: (command, payload) => {
+    send_message_to_unity: (command, payload = {}) => {
         const message = JSON.stringify({ command, payload });
         try{
             GameShell.unityInstance.SendMessage('GameBridge', 'Pass', message);
