@@ -1,14 +1,16 @@
+interface ReelSoftCurrency {
+    code: string;
+    decimal: string;
+    denomination: number;
+    grouping: string;
+    precision: number;
+    prefix: string;
+    suffix: string;
+}
+
 interface OpenGameData {
     betLevels: number[];
-    currency: {
-        code: string;
-        decimal: string;
-        denomination: number;
-        grouping: string;
-        precision: number;
-        prefix: string;
-        suffix: string;
-    };
+    currency: ReelSoftCurrency;
     defaultBet: number;
     payTable: RawPayTables[];
     rtpVersion: number;
@@ -46,11 +48,11 @@ window.addEventListener('time_out', () => {
 
 // @ts-ignore
 window.addEventListener('open_game_data', (open_game_data: CustomEvent<OpenGameData>) => {
-    GameShell.current_bet = open_game_data.detail.defaultBet;
-    // format the bet levels (i.e. /100)
-    GameShell.bet_levels = open_game_data.detail.betLevels.map(i => i / 100);
+    GameShell.current_bet = (open_game_data.detail.defaultBet / 100).toFixed(2);
+    // format the bet levels (i.e., /100) and forces 2 decimal places
+    GameShell.bet_levels = open_game_data.detail.betLevels.map((i: number) => (i / 100).toFixed(2));
 
-    GameShell.set_currency_symbol(open_game_data.detail.currency.code)
+    GameShell.set_currency_symbol(open_game_data.detail.currency)
         .then(GameShell.populate_bet_levels);
     GameShell.format_pay_tables(open_game_data.detail.payTable)
         .then(GameShell.populate_pay_tables);
@@ -69,9 +71,9 @@ class GameShell {
     public static rtp = 100;
     public static is_fullscreen = false;
     public static current_language = 'en';
-    public static currency_symbol = '$';
-    public static current_bet = 0;
-    public static bet_levels: number[] = [];
+    public static currency_prefix = '';
+    public static current_bet = `0.00`;
+    public static bet_levels: string[] = [];
     public static pay_tables: FormattedPayTables[] = [];
     public static asset_url = '';
     public static splash_video_ended = false;
@@ -234,6 +236,7 @@ class GameShell {
             i.src = `https://ik.imagekit.io/bmp6bnlpn/flags/${language_code}.svg?updatedAt=1750776194371`;
         })
     }
+
     public static update_language(): void {
         const requested_language = GameShell.get_requested_language();
         if(requested_language === GameShell.current_language){
@@ -268,6 +271,7 @@ class GameShell {
         error_modal.showModal();
         GameShell.collapse_quick_actions();
     }
+
     public static reload(): void {
         document.location.reload();
     }
@@ -278,24 +282,23 @@ class GameShell {
         GameShell.bet_levels
             .forEach(amount => {
                 const clickable: HTMLLabelElement = document.createElement('label');
-                clickable.innerText = `${GameShell.currency_symbol} ${amount}`;
+                clickable.textContent = GameShell.currency_prefix + ` ${amount}`;
 
                 const input: HTMLInputElement = document.createElement('input');
-                const value = amount
                 input.type = 'radio';
                 input.name = 'amounts';
-                input.value = value.toString();
+                input.value = amount;
                 input.checked = GameShell.current_bet === amount;
                 input.addEventListener('change', () => {
-                    GameShell.set_bet(value);
+                    GameShell.set_bet(amount);
                 })
                 clickable.appendChild(input);
                 container.appendChild(clickable);
             })
     }
 
-    public static async set_bet(value: number): Promise<void> {
-        if(value.toString() === GameShell.current_bet.toString()){
+    public static async set_bet(value: string): Promise<void> {
+        if(value === GameShell.current_bet){
             return;
         }
         GameShell.current_bet = value;
@@ -409,19 +412,13 @@ class GameShell {
         }
     }
 
-    public static async set_currency_symbol(iso_code: string): Promise<void> {
-        switch(iso_code){
-            case 'USD':
-                GameShell.currency_symbol = '$';
-                break;
-            case 'EUR':
-                GameShell.currency_symbol = '€';
-                break;
-            default:
-                GameShell.currency_symbol = '£';
-                break;
+    public static async set_currency_symbol(currency: ReelSoftCurrency): Promise<void> {
+        try {
+            GameShell.currency_prefix = JSON.parse('"' + currency.prefix + '"');
+        } catch (e) {
+            console.warn('Failed to decode Unicode escape in currency prefix. Using raw prefix.', currency.prefix, e);
+            GameShell.currency_prefix = '?';
         }
-        return Promise.resolve();
     }
 
     /**
@@ -440,9 +437,7 @@ class GameShell {
 
     public static on_splash_video_end(){
         GameShell.splash_video_ended = true;
-        // document.querySelector<HTMLDivElement>('#unity-loading-bar')?.classList.add('scale-out-center');
         document.querySelector<HTMLDivElement>('#unity-loading-bar')?.classList.add('fade-out');
-        // document.querySelector<HTMLDivElement>('#unity-loading-bar')!.style.display = 'none';
     }
 
     public static async delay(milliseconds: number): Promise<void> {
@@ -453,6 +448,7 @@ class GameShell {
         while(!GameShell.splash_video_ended){
             await GameShell.delay(200);
         }
+
         GameShell.unityInstance = unityInstance;
         const diagnostics_icon = document.getElementById('diagnostics-icon');
         // @ts-ignore
@@ -466,20 +462,17 @@ class GameShell {
         if(GameShell.lil_gui){
             GameShell.lil_gui.show();
         }
+
         document.querySelector('#quick-actions')!.classList.add('active');
-        document
-            .querySelectorAll<HTMLInputElement>('label.toggle input[type=checkbox]')
+        document.querySelectorAll<HTMLInputElement>('label.toggle input[type=checkbox]')
             .forEach(i => {
                 i.addEventListener('change', () => GameShell.toggle(i));
             })
 
         // @ts-ignore
-        if(window['canvas'] as HTMLCanvasElement !== undefined){
-            // @ts-ignore
-            window['canvas'].addEventListener('fullscreenchange', () => {
-                GameShell.is_fullscreen = document.fullscreenElement !== null;
-            })
-        }
+        canvas.addEventListener('fullscreenchange', () => {
+            GameShell.is_fullscreen = document.fullscreenElement !== null;
+        })
 
     }
 }
