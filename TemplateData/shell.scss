@@ -40,6 +40,23 @@ img {
   transform: translate(-50%, -50%);
   display: none;
 
+  &:before {
+    content: '';
+    position: fixed;
+    width: 100vw;
+    background: black;
+    height: 100vh;
+    top: 50%;
+    left: 50%;
+    z-index: -2;
+    transform: translate(-50%, -50%);
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
   video {
     max-height: 80vh;
     display: block;
@@ -424,4 +441,34 @@ dialog.fugaso{
 img.symbol {
   max-width: 80px;
   align-self: center;
+}
+
+.fade-out {
+  animation: fade-the-fuck-out 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+}
+
+@-webkit-keyframes fade-the-fuck-out {
+  0% {
+    opacity: 1;
+  }
+  99% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+@keyframes fade-the-fuck-out {
+  0% {
+    opacity: 1;
+  }
+  99% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
 }

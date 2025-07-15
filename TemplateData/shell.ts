@@ -18,6 +18,7 @@ interface UnityInstance {
     SendMessage(gameObjectName: string, methodName: string, message: string): void;
     SetFullscreen(state: number): void;
     Quit(): Promise<void>;
+    GetMetricsInfo(): void;
 }
 
 interface FormattedPayTables {
@@ -46,7 +47,8 @@ window.addEventListener('time_out', () => {
 // @ts-ignore
 window.addEventListener('open_game_data', (open_game_data: CustomEvent<OpenGameData>) => {
     GameShell.current_bet = open_game_data.detail.defaultBet;
-    GameShell.bet_levels = open_game_data.detail.betLevels;
+    // format the bet levels (i.e. /100)
+    GameShell.bet_levels = open_game_data.detail.betLevels.map(i => i / 100);
 
     GameShell.set_currency_symbol(open_game_data.detail.currency.code)
         .then(GameShell.populate_bet_levels);
@@ -72,6 +74,7 @@ class GameShell {
     public static bet_levels: number[] = [];
     public static pay_tables: FormattedPayTables[] = [];
     public static asset_url = '';
+    public static splash_video_ended = false;
 
     /**
      * @see https://flagicons.lipis.dev/
@@ -156,6 +159,7 @@ class GameShell {
     //         }
     //     }
     // },
+
     public static toggle_fullscreen() {
         if (!GameShell.unityInstance) {
             console.log('No unity instance to toggle fullscreen on.')
@@ -216,6 +220,7 @@ class GameShell {
         GameShell.get_language_modal_label().innerText = GameShell.available_languages[index_to_use].label;
         GameShell.update_flag_image_elements(language_to_use);
     }
+
     public static next_language(): void {
         const current_index = GameShell.available_languages.findIndex(i => i.code === GameShell.get_requested_language())
         const index_to_use = (current_index +1) % GameShell.available_languages.length;
@@ -337,7 +342,7 @@ class GameShell {
         pay_tables_received_in_event.forEach(item => {
             // don't care about 0 payouts
             if(item.payout === 0){
-                return
+                return;
             }
             const existing_group_index = result.findIndex( i => i.symbol_number === item.symbol);
             if(existing_group_index !== -1){
@@ -419,10 +424,45 @@ class GameShell {
         return Promise.resolve();
     }
 
+    /**
+     * @param progress      a value between 0 and 1
+     */
+    public static unity_progress(progress: number): void {
+        // const circle_progress_element = document.querySelector<HTMLDivElement>('#unity-loading-bar svg circle');
+        // if(!circle_progress_element){
+        //     return;
+        // }
+        //
+        // progress = Math.min(1, Math.max(0, progress));
+        // const start_size = parseInt(window.getComputedStyle(circle_progress_element).strokeDasharray);
+        // circle_progress_element.style.strokeDashoffset = (start_size - (start_size * progress)) + 'px';
+    }
 
-    public static init(unityInstance: UnityInstance): void {
+    public static on_splash_video_end(){
+        GameShell.splash_video_ended = true;
+        // document.querySelector<HTMLDivElement>('#unity-loading-bar')?.classList.add('scale-out-center');
+        document.querySelector<HTMLDivElement>('#unity-loading-bar')?.classList.add('fade-out');
+        // document.querySelector<HTMLDivElement>('#unity-loading-bar')!.style.display = 'none';
+    }
+
+    public static async delay(milliseconds: number): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
+    }
+
+    public static async init(unityInstance: UnityInstance): Promise<void> {
+        while(!GameShell.splash_video_ended){
+            await GameShell.delay(200);
+        }
         GameShell.unityInstance = unityInstance;
-        document.querySelector<HTMLDivElement>('#unity-loading-bar')!.style.display = 'none';
+        const diagnostics_icon = document.getElementById('diagnostics-icon');
+        // @ts-ignore
+        if(diagnostics_icon && unityDiagnostics !== undefined){
+            diagnostics_icon.onclick = () => {
+                // @ts-ignore
+                unityDiagnostics.openDiagnosticsDiv(unityInstance.GetMetricsInfo);
+            }
+        }
+
         if(GameShell.lil_gui){
             GameShell.lil_gui.show();
         }

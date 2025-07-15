@@ -1,3 +1,11 @@
+window.addEventListener('game_is_spinning', () => {
+    if(!GameShell || !GameShell.lil_gui) return;
+    GameShell.lil_gui.controllers.forEach(i => i.enable(false))
+})
+window.addEventListener('game_is_not_spinning', () => {
+    if(!GameShell || !GameShell.lil_gui) return;
+    GameShell.lil_gui.controllers.forEach(i => i.enable(true))
+})
 const gui = new lil.GUI();
 gui.domElement.style.position = 'fixed';
 gui.domElement.style.top = '0';
