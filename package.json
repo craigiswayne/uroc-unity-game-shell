@@ -7,7 +7,7 @@
     "build": "node clean.js && npm run compile:sass && npm run compile:pug && npm run compile:ts && npm run minify:js",
     "compile:pug": "pug index.pug --pretty",
     "compile:sass": "sass TemplateData/shell.scss TemplateData/shell.min.css --style=compressed",
-    "compile:ts": "tsc",
+    "compile:ts": "tsc --removeComments true --sourceMap true",
     "minify:js": "uglifyjs TemplateData/shell.js --output TemplateData/shell.min.js",
     "package": "node clean.js && npm run build && node package.js",
     "watch:pug": "npm run compile:pug -- --watch",

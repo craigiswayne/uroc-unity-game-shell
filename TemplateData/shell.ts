@@ -8,7 +8,7 @@ interface ReelSoftCurrency {
     suffix: string;
 }
 
-interface OpenGameData {
+interface ReelSoftOpenGameData {
     betLevels: number[];
     currency: ReelSoftCurrency;
     defaultBet: number;
@@ -38,8 +38,8 @@ interface RawPayTables {
 type AvailableDialogs = 'game_rules' | 'quit_modal' | 'language_modal' | 'error_modal' | 'bet_levels_modal';
 
 // @ts-ignore
-window.addEventListener('bet_changed', (bet_changed_event: CustomEvent) => {
-    GameShell.set_bet(bet_changed_event.detail.amount);
+window.addEventListener('bet_changed', (bet_changed_event: CustomEvent<{amount: number}>) => {
+    GameShell.set_bet(reelsoft_number_to_normal_number(bet_changed_event.detail.amount));
 })
 
 window.addEventListener('time_out', () => {
@@ -47,10 +47,14 @@ window.addEventListener('time_out', () => {
 })
 
 // @ts-ignore
-window.addEventListener('open_game_data', (open_game_data: CustomEvent<OpenGameData>) => {
-    GameShell.current_bet = (open_game_data.detail.defaultBet / 100).toFixed(2);
-    // format the bet levels (i.e., /100) and forces 2 decimal places
-    GameShell.bet_levels = open_game_data.detail.betLevels.map((i: number) => (i / 100).toFixed(2));
+window.addEventListener('open_game_data', (open_game_data: CustomEvent<ReelSoftOpenGameData>) => {
+    GameShell.current_bet = reelsoft_number_to_normal_number(open_game_data.detail.defaultBet);
+    GameShell.bet_levels = open_game_data.detail.betLevels.map((i: number) => {
+        return {
+            with_decimals: reelsoft_number_to_normal_number(i),
+            raw: i
+        }
+    });
 
     GameShell.set_currency_symbol(open_game_data.detail.currency)
         .then(GameShell.populate_bet_levels);
@@ -64,6 +68,10 @@ window.alert = (message) => {
     console.log('Alert Swallowed:', message);
 }
 
+const reelsoft_number_to_normal_number = (number: number): string => {
+    return (number / 100).toFixed(2);
+}
+
 class GameShell {
     // @ts-ignore
     public static lil_gui?: GUI;
@@ -73,7 +81,7 @@ class GameShell {
     public static current_language = 'en';
     public static currency_prefix = '';
     public static current_bet = `0.00`;
-    public static bet_levels: string[] = [];
+    public static bet_levels: { with_decimals: string, raw: number }[] = [];
     public static pay_tables: FormattedPayTables[] = [];
     public static asset_url = '';
     public static splash_video_ended = false;
@@ -280,35 +288,35 @@ class GameShell {
         const container = GameShell.get_dialog_by_id('bet_levels_modal').querySelector('.grid')!;
         container.innerHTML = '';
         GameShell.bet_levels
-            .forEach(amount => {
+            .forEach(bet_level => {
                 const clickable: HTMLLabelElement = document.createElement('label');
-                clickable.textContent = GameShell.currency_prefix + ` ${amount}`;
+                clickable.textContent = GameShell.currency_prefix + ` ${bet_level.with_decimals}`;
 
                 const input: HTMLInputElement = document.createElement('input');
                 input.type = 'radio';
                 input.name = 'amounts';
-                input.value = amount;
-                input.checked = GameShell.current_bet === amount;
-                input.addEventListener('change', () => {
-                    GameShell.set_bet(amount);
-                })
+                input.value = bet_level.with_decimals;
+                input.checked = GameShell.current_bet === bet_level.with_decimals;
+                input.onchange = () => {
+                    GameShell.set_bet(bet_level.with_decimals);
+                }
                 clickable.appendChild(input);
                 container.appendChild(clickable);
             })
     }
 
-    public static async set_bet(value: string): Promise<void> {
-        if(value === GameShell.current_bet){
+    public static async set_bet(value_with_decimals: string): Promise<void> {
+        if(value_with_decimals === GameShell.current_bet){
             return;
         }
-        GameShell.current_bet = value;
-        GameShell.send_message_to_unity('setBet', {value});
-        const existing_bet_level_radio = GameShell.get_dialog_by_id('bet_levels_modal').querySelector<HTMLInputElement>(`input[type=radio][value="${value}"]`);
+        const raw_value = GameShell.bet_levels.find(i => i.with_decimals === value_with_decimals)?.raw;
+        GameShell.current_bet = value_with_decimals;
+        GameShell.send_message_to_unity('setBet', {value: raw_value});
+        const existing_bet_level_radio = GameShell.get_dialog_by_id('bet_levels_modal').querySelector<HTMLInputElement>(`input[type=radio][value="${value_with_decimals}"]`);
         if(!existing_bet_level_radio){
             return;
         }
         existing_bet_level_radio.checked = true;
-
     }
 
     public static get_pay_tables_grid(): HTMLDivElement {
