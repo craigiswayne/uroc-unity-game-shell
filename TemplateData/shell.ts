@@ -84,7 +84,8 @@ class GameShell {
     public static bet_levels: { with_decimals: string, raw: number }[] = [];
     public static pay_tables: FormattedPayTables[] = [];
     public static asset_url = '';
-    public static splash_video_ended = false;
+    public static splash_progress = 0;
+    public static unity_progress = 0;
 
     /**
      * @see https://flagicons.lipis.dev/
@@ -429,23 +430,28 @@ class GameShell {
         }
     }
 
-    /**
-     * @param progress      a value between 0 and 1
-     */
-    public static unity_progress(progress: number): void {
-        // const circle_progress_element = document.querySelector<HTMLDivElement>('#unity-loading-bar svg circle');
-        // if(!circle_progress_element){
-        //     return;
-        // }
-        //
-        // progress = Math.min(1, Math.max(0, progress));
-        // const start_size = parseInt(window.getComputedStyle(circle_progress_element).strokeDasharray);
-        // circle_progress_element.style.strokeDashoffset = (start_size - (start_size * progress)) + 'px';
+    public static update_progress_loader(): void {
+        const circle_progress_element = document.querySelector<HTMLDivElement>('#unity-loading-bar svg circle');
+        if(!circle_progress_element){
+            return;
+        }
+        const average_progress = (GameShell.splash_progress + GameShell.unity_progress)/2;
+        const start_size = parseInt(window.getComputedStyle(circle_progress_element).strokeDasharray);
+        circle_progress_element.style.strokeDashoffset = (start_size - (start_size * average_progress)) + 'px';
     }
 
-    public static on_splash_video_end(){
-        GameShell.splash_video_ended = true;
-        document.querySelector<HTMLDivElement>('#unity-loading-bar')?.classList.add('fade-out');
+    public static async on_splash_video_end(): Promise<void> {
+        // give the splash a bit more time to finish
+        await GameShell.delay(1000);
+        GameShell.splash_progress = 1;
+    }
+
+    public static async on_splash_video_progress(element: HTMLVideoElement): Promise<void> {
+        const currentTime = element.currentTime;
+        const duration = element.duration;
+        const progress = currentTime / duration;
+        GameShell.splash_progress = progress;
+        GameShell.update_progress_loader()
     }
 
     public static async delay(milliseconds: number): Promise<void> {
@@ -453,9 +459,12 @@ class GameShell {
     }
 
     public static async init(unityInstance: UnityInstance): Promise<void> {
-        while(!GameShell.splash_video_ended){
+        GameShell.unity_progress = 1;
+        while(GameShell.splash_progress !== 1){
             await GameShell.delay(200);
         }
+
+        document.querySelector<HTMLDivElement>('#unity-loading-bar')?.classList.add('fade-out');
 
         GameShell.unityInstance = unityInstance;
         const diagnostics_icon = document.getElementById('diagnostics-icon');
