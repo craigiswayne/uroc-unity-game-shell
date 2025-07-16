@@ -46,6 +46,14 @@ window.addEventListener('time_out', () => {
     GameShell.show_error_popup('Your session has timed out')
 })
 
+window.addEventListener('game_is_spinning', () => {
+    GameShell.is_spinning = true;
+})
+
+window.addEventListener('game_is_not_spinning', () => {
+    GameShell.is_spinning = false;
+})
+
 // @ts-ignore
 window.addEventListener('open_game_data', (open_game_data: CustomEvent<ReelSoftOpenGameData>) => {
     GameShell.current_bet = reelsoft_number_to_normal_number(open_game_data.detail.defaultBet);
@@ -86,6 +94,7 @@ class GameShell {
     public static asset_url = '';
     public static splash_progress = 0;
     public static unity_progress = 0;
+    public static is_spinning = false;
 
     /**
      * @see https://flagicons.lipis.dev/
@@ -144,6 +153,12 @@ class GameShell {
     }
 
     public static show_dialog_by_id(id_selector: AvailableDialogs) {
+        /**
+         * Prevent ALL modals from showing
+         */
+        if(GameShell.is_spinning) {
+            return;
+        }
         GameShell.get_dialog_by_id(id_selector).showModal();
         GameShell.collapse_quick_actions();
     }
