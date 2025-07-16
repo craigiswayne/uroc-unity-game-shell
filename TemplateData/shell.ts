@@ -465,6 +465,9 @@ class GameShell {
         }
 
         document.querySelector<HTMLDivElement>('#unity-loading-bar')?.classList.add('fade-out');
+        setTimeout(() => {
+            document.querySelector<HTMLDivElement>('#unity-loading-bar')?.remove();
+        }, 800);
 
         GameShell.unityInstance = unityInstance;
         const diagnostics_icon = document.getElementById('diagnostics-icon');

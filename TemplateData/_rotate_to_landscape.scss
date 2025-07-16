@@ -1,0 +1,60 @@
+#rotate-to-landscape {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  pointer-events: none;
+  background: rgb(0, 0, 0);
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  text-align: center;
+  z-index: -1;
+  visibility: hidden;
+  color: white;
+
+  .phone {
+    width: 50px;
+    height: 100px;
+    border: 3px solid currentColor;
+    border-radius: 10px;
+    -webkit-animation: rotate-then-fade 3s ease-in-out infinite;
+    animation: rotate-then-fade 3s ease-in-out infinite;
+  }
+}
+
+@media screen and (orientation: portrait) and (max-aspect-ratio: 0.8){
+  #rotate-to-landscape {
+    z-index: 1000;
+    visibility: visible;
+  }
+
+  body > *:not(#rotate-to-landscape) {
+    display: none;
+  }
+}
+
+@keyframes rotate-then-fade {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: rotate(-90deg);
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(-90deg);
+  }
+  99% {
+    opacity: 0;
+    transform: rotate(-90deg);
+  }
+  100% {
+    transform: rotate(0);
+    opacity: 0;
+  }
+}
