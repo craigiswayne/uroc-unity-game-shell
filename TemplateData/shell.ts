@@ -37,45 +37,6 @@ interface RawPayTables {
 
 type AvailableDialogs = 'game_rules' | 'quit_modal' | 'language_modal' | 'error_modal' | 'bet_levels_modal';
 
-// @ts-ignore
-window.addEventListener('bet_changed', (bet_changed_event: CustomEvent<{amount: number}>) => {
-    GameShell.set_bet(reelsoft_number_to_normal_number(bet_changed_event.detail.amount));
-})
-
-window.addEventListener('time_out', () => {
-    GameShell.show_error_popup('Your session has timed out')
-})
-
-window.addEventListener('game_is_spinning', () => {
-    GameShell.is_spinning = true;
-})
-
-window.addEventListener('game_is_not_spinning', () => {
-    GameShell.is_spinning = false;
-})
-
-// @ts-ignore
-window.addEventListener('open_game_data', (open_game_data: CustomEvent<ReelSoftOpenGameData>) => {
-    GameShell.current_bet = reelsoft_number_to_normal_number(open_game_data.detail.defaultBet);
-    GameShell.bet_levels = open_game_data.detail.betLevels.map((i: number) => {
-        return {
-            with_decimals: reelsoft_number_to_normal_number(i),
-            raw: i
-        }
-    });
-
-    GameShell.set_currency_symbol(open_game_data.detail.currency)
-        .then(GameShell.populate_bet_levels);
-    GameShell.format_pay_tables(open_game_data.detail.payTable)
-        .then(GameShell.populate_pay_tables);
-
-    GameShell.update_rtp(open_game_data.detail.rtpVersion);
-})
-
-window.alert = (message) => {
-    console.log('Alert Swallowed:', message);
-}
-
 const reelsoft_number_to_normal_number = (number: number): string => {
     return (number / 100).toFixed(2);
 }
@@ -446,7 +407,7 @@ class GameShell {
     }
 
     public static update_progress_loader(): void {
-        const circle_progress_element = document.querySelector<HTMLDivElement>('#unity-loading-bar svg circle');
+        const circle_progress_element = document.querySelector<HTMLDivElement>('#splash svg circle');
         if(!circle_progress_element){
             return;
         }
@@ -479,9 +440,9 @@ class GameShell {
             await GameShell.delay(200);
         }
 
-        document.querySelector<HTMLDivElement>('#unity-loading-bar')?.classList.add('fade-out');
+        document.querySelector<HTMLDivElement>('#splash')?.classList.add('fade-out');
         setTimeout(() => {
-            document.querySelector<HTMLDivElement>('#unity-loading-bar')?.remove();
+            // document.querySelector<HTMLDivElement>('#splash')?.remove();
         }, 800);
 
         GameShell.unityInstance = unityInstance;
@@ -510,4 +471,40 @@ class GameShell {
         })
 
     }
+}
+
+
+// @ts-ignore
+window.addEventListener('bet_changed', (bet_changed_event: CustomEvent<{amount: number}>) => {
+    GameShell.set_bet(reelsoft_number_to_normal_number(bet_changed_event.detail.amount));
+})
+
+window.addEventListener('time_out', () => GameShell.show_error_popup('Your session has timed out'))
+
+window.addEventListener('game_is_spinning', () => GameShell.is_spinning = true)
+
+window.addEventListener('game_is_not_spinning', () => GameShell.is_spinning = false)
+
+window.addEventListener('change_bet_amount', () => GameShell.show_dialog_by_id('bet_levels_modal'));
+
+// @ts-ignore
+window.addEventListener('open_game_data', (open_game_data: CustomEvent<ReelSoftOpenGameData>) => {
+    GameShell.current_bet = reelsoft_number_to_normal_number(open_game_data.detail.defaultBet);
+    GameShell.bet_levels = open_game_data.detail.betLevels.map((i: number) => {
+        return {
+            with_decimals: reelsoft_number_to_normal_number(i),
+            raw: i
+        }
+    });
+
+    GameShell.set_currency_symbol(open_game_data.detail.currency)
+        .then(GameShell.populate_bet_levels);
+    GameShell.format_pay_tables(open_game_data.detail.payTable)
+        .then(GameShell.populate_pay_tables);
+
+    GameShell.update_rtp(open_game_data.detail.rtpVersion);
+})
+
+window.alert = (message) => {
+    console.log('Alert Swallowed:', message);
 }

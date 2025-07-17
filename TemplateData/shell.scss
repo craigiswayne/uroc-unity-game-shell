@@ -1,5 +1,11 @@
 @use "rotate_to_landscape";
 
+.lil-gui .controller button {
+  text-align: left;
+  text-indent: 10px;
+}
+
+
 * {
   box-sizing: border-box;
 }
@@ -35,39 +41,36 @@ img {
   cursor: pointer;
 }
 
-#unity-loading-bar {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+#splash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
   display: none;
-  pointer-events: none;
-  height: min(300px, 50vh);
+  background: black;
 
-  &:before {
-    content: '';
-    position: fixed;
-    width: 100vw;
-    background: black;
-    height: 100vh;
-    top: 50%;
+  .inner {
+    position: absolute;
     left: 50%;
-    z-index: -2;
+    top: 50%;
     transform: translate(-50%, -50%);
-  }
+    height: min(300px, 50vh);
 
-  svg {
-    width: 100%;
-    height: 100%;
+    svg {
+      width: 100%;
+      height: 100%;
 
-    circle {
-      transition: stroke-dashoffset 0.3s ease;
+      circle {
+        transition: stroke-dashoffset 0.3s ease;
+      }
     }
-  }
 
-  video {
-    max-height: 80vh;
-    display: block;
+    video {
+      max-height: 80vh;
+      display: block;
+    }
   }
 }
 
