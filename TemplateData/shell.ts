@@ -442,7 +442,7 @@ class GameShell {
 
         document.querySelector<HTMLDivElement>('#splash')?.classList.add('fade-out');
         setTimeout(() => {
-            // document.querySelector<HTMLDivElement>('#splash')?.remove();
+            document.querySelector<HTMLDivElement>('#splash')?.remove();
         }, 800);
 
         GameShell.unityInstance = unityInstance;

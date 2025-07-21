@@ -47,7 +47,7 @@ img {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 10000;
+  z-index: 1;
   display: none;
   background: black;
 
@@ -212,6 +212,7 @@ dialog.fugaso {
       border-radius: 0;
       font-size: 16px;
       width: 100vw;
+
     &[open]{
       display: flex;
       flex-direction: column;
