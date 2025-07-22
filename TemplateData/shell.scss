@@ -138,6 +138,16 @@ aside#quick-actions {
     outline: none;
   }
 
+  button.action[disabled] {
+    color: gray;
+    pointer-events: none;
+    cursor: not-allowed;
+
+    svg {
+      color: inherit;
+    }
+  }
+
   svg {
     color: white;
     max-width: 40px;

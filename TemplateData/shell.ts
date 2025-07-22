@@ -481,9 +481,19 @@ window.addEventListener('bet_changed', (bet_changed_event: CustomEvent<{amount: 
 
 window.addEventListener('time_out', () => GameShell.show_error_popup('Your session has timed out'))
 
-window.addEventListener('game_is_spinning', () => GameShell.is_spinning = true)
+window.addEventListener('game_is_spinning', () => {
+    GameShell.is_spinning = true;
+    document.querySelectorAll<HTMLButtonElement>('button.disable_on_spin').forEach(async button => {
+        button.disabled = true;
+    })
+})
 
-window.addEventListener('game_is_not_spinning', () => GameShell.is_spinning = false)
+window.addEventListener('game_is_not_spinning', () => {
+    GameShell.is_spinning = false;
+    document.querySelectorAll<HTMLButtonElement>('button.disable_on_spin').forEach(async button => {
+        button.disabled = false;
+    })
+})
 
 window.addEventListener('change_bet_amount', () => GameShell.show_dialog_by_id('bet_levels_modal'));
 
