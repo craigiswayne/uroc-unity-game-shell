@@ -504,7 +504,3 @@ window.addEventListener('open_game_data', (open_game_data: CustomEvent<ReelSoftO
 
     GameShell.update_rtp(open_game_data.detail.rtpVersion);
 })
-
-window.alert = (message) => {
-    console.log('Alert Swallowed:', message);
-}
