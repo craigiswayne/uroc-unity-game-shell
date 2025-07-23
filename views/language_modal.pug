@@ -3,7 +3,7 @@ dialog#language_modal.fugaso
     .content
         .column.center-center
             button.nav-previous(onclick="GameShell.previous_language()") ❮
-            img.flag(src="https://ik.imagekit.io/bmp6bnlpn/flags/en.svg?updatedAt=1750776194371")
+            img.flag(src=`${my_template_config.asset_domain}/flags/en.svg?updatedAt=${my_template_config.cache_bust_params}`)
             button.nav-next(onclick="GameShell.next_language()") ❯
     label ENGLISH
     footer

@@ -41,6 +41,11 @@ const reelsoft_number_to_normal_number = (number: number): string => {
     return (number / 100).toFixed(2);
 }
 
+const my_template_config = {
+    asset_domain: 'https://ik.imagekit.io/bmp6bnlpn',
+    cache_bust_params: Date.now().toString()
+};
+
 class GameShell {
     // @ts-ignore
     public static lil_gui?: GUI;
@@ -49,6 +54,7 @@ class GameShell {
     public static is_fullscreen = false;
     public static current_language = 'en';
     public static currency_prefix = '';
+    public static default_bet = `0.00`;
     public static current_bet = `0.00`;
     public static bet_levels: { with_decimals: string, raw: number }[] = [];
     public static pay_tables: FormattedPayTables[] = [];
@@ -108,7 +114,6 @@ class GameShell {
         document.querySelector<HTMLInputElement>('#toggle_menu input[type=checkbox]')!.checked = false;
     }
 
-    // TODO: use this
     public static get_dialog_by_id(id_selector: AvailableDialogs): HTMLDialogElement {
         return document.querySelector<HTMLDialogElement>(`dialog#${id_selector}.fugaso`)!;
     }
@@ -120,12 +125,16 @@ class GameShell {
         if(GameShell.is_spinning) {
             return;
         }
-        GameShell.get_dialog_by_id(id_selector).showModal();
+        const dialog = GameShell.get_dialog_by_id(id_selector);
+        dialog.addEventListener('click', GameShell.handle_backdrop_click);
+        dialog.showModal();
         GameShell.collapse_quick_actions();
     }
 
     public static close_dialog_by_id(id_selector: AvailableDialogs) {
-        GameShell.get_dialog_by_id(id_selector).close();
+        const dialog = GameShell.get_dialog_by_id(id_selector);
+        dialog.removeEventListener('click', GameShell.handle_backdrop_click);
+        dialog.close();
     }
 
     public static get_unity_canvas() {
@@ -218,7 +227,7 @@ class GameShell {
 
     public static update_flag_image_elements(language_code: string): void {
         document.querySelectorAll<HTMLImageElement>('img.flag').forEach(i => {
-            i.src = `https://ik.imagekit.io/bmp6bnlpn/flags/${language_code}.svg?updatedAt=1750776194371`;
+            i.src = `${my_template_config.asset_domain}/flags/${language_code}.svg?${my_template_config.cache_bust_params}`;
         })
     }
 
@@ -365,7 +374,7 @@ class GameShell {
 
             const symbol_container = document.createElement('div');
             symbol_container.className = 'symbol_container';
-            symbol_container.innerHTML = `<img class="symbol" src="https://ik.imagekit.io/bmp6bnlpn/games/miami_blaze/symbols/symbol-${pay_table.symbol_code}.png?updatedAt=1752504727975" alt="pay table symbol-${pay_table.symbol_number}" />`;
+            symbol_container.innerHTML = `<img class="symbol" src="${my_template_config.asset_domain}/games/miami_blaze/symbols/symbol-${pay_table.symbol_code}.png?updatedAt=${my_template_config.cache_bust_params}" alt="pay table symbol-${pay_table.symbol_number}" />`;
 
             const data_container = document.createElement('div');
             data_container.className = 'data';
@@ -425,9 +434,24 @@ class GameShell {
     public static async on_splash_video_progress(element: HTMLVideoElement): Promise<void> {
         const currentTime = element.currentTime;
         const duration = element.duration;
-        const progress = currentTime / duration;
-        GameShell.splash_progress = progress;
+        GameShell.splash_progress = currentTime / duration;
         GameShell.update_progress_loader()
+    }
+
+    public static async handle_escape_key(event: KeyboardEvent){
+        if (event.key !== 'Escape' && event.code !== 'Escape' && event.keyCode !== 27) {
+            return
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    public static async handle_backdrop_click(event: MouseEvent): Promise<void> {
+        const dialog = event.target as HTMLDialogElement;
+        if (event.target !== dialog) {
+            console.log("Backdrop clicked, but dialog dismissal prevented.");
+        }
     }
 
     public static async delay(milliseconds: number): Promise<void> {
@@ -500,6 +524,7 @@ window.addEventListener('change_bet_amount', () => GameShell.show_dialog_by_id('
 // @ts-ignore
 window.addEventListener('open_game_data', (open_game_data: CustomEvent<ReelSoftOpenGameData>) => {
     GameShell.current_bet = reelsoft_number_to_normal_number(open_game_data.detail.defaultBet);
+    GameShell.default_bet = reelsoft_number_to_normal_number(open_game_data.detail.defaultBet);
     GameShell.bet_levels = open_game_data.detail.betLevels.map((i: number) => {
         return {
             with_decimals: reelsoft_number_to_normal_number(i),
@@ -514,3 +539,5 @@ window.addEventListener('open_game_data', (open_game_data: CustomEvent<ReelSoftO
 
     GameShell.update_rtp(open_game_data.detail.rtpVersion);
 })
+
+document.addEventListener('keydown', GameShell.handle_escape_key, true); // 'true' for capture phase

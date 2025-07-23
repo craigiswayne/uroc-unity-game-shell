@@ -1,6 +1,6 @@
 aside#quick-actions
     a(href='https://gamedemos.uroc.com/games/' target='_blank')
-        img(src="https://ik.imagekit.io/bmp6bnlpn/uroc/uroc-logo-primary.svg?updatedAt=1750776072240")
+        img(src=`${my_template_config.asset_domain}/uroc/uroc-logo-primary.svg?updatedAt=${my_template_config.cache_bust_params}`)
     button.action(onclick='GameShell.toggle_fullscreen()')
         svg.off(xmlns='http://www.w3.org/2000/svg' viewbox='0 0 256 256')
             polyline(points='160 48 208 48 208 96' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='16')
@@ -52,7 +52,7 @@ aside#quick-actions
                     line(x1='192' y1='165' x2='192' y2='205' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='16')
                     line(x1='128' y1='117' x2='128' y2='205' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='16')
             button.action(onclick='GameShell.show_dialog_by_id("language_modal")')
-                img.flag(src="https://ik.imagekit.io/bmp6bnlpn/flags/en.svg?updatedAt=1750776194371")
+                img.flag(src=`${my_template_config.asset_domain}/flags/en.svg?updatedAt=${my_template_config.cache_bust_params}`)
             button.action(onclick='GameShell.show_dialog_by_id("quit_modal")')
                 svg(xmlns='http://www.w3.org/2000/svg' viewbox='0 0 256 256')
                     polyline(points='112 40 48 40 48 216 112 216' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='16')
