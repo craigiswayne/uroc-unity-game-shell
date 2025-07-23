@@ -54,14 +54,15 @@ class GameShell {
     public static is_fullscreen = false;
     public static current_language = 'en';
     public static currency_prefix = '';
-    public static default_bet = `0.00`;
-    public static current_bet = `0.00`;
+    public static default_bet = '0.00';
+    public static current_bet = '0.00';
     public static bet_levels: { with_decimals: string, raw: number }[] = [];
     public static pay_tables: FormattedPayTables[] = [];
     public static asset_url = '';
     public static splash_progress = 0;
     public static unity_progress = 0;
     public static is_spinning = false;
+    public static open_game_data: ReelSoftOpenGameData;
 
     /**
      * @see https://flagicons.lipis.dev/
@@ -297,6 +298,8 @@ class GameShell {
         }
         const raw_value = GameShell.bet_levels.find(i => i.with_decimals === value_with_decimals)?.raw;
         GameShell.current_bet = value_with_decimals;
+        GameShell.format_pay_tables()
+            .then(GameShell.populate_pay_tables)
         GameShell.send_message_to_unity('setBet', {value: raw_value});
         const existing_bet_level_radio = GameShell.get_dialog_by_id('bet_levels_modal').querySelector<HTMLInputElement>(`input[type=radio][value="${value_with_decimals}"]`);
         if(!existing_bet_level_radio){
@@ -309,8 +312,8 @@ class GameShell {
         return document.querySelector<HTMLDivElement>('.grid.paytable')!;
     }
 
-    public static async format_pay_tables(pay_tables_received_in_event: RawPayTables[]): Promise<FormattedPayTables[]> {
-        if(pay_tables_received_in_event === undefined){
+    public static async format_pay_tables(): Promise<FormattedPayTables[]> {
+        if(GameShell.open_game_data.payTable === undefined){
             GameShell.pay_tables = [];
             return Promise.resolve(GameShell.pay_tables);
         }
@@ -336,25 +339,27 @@ class GameShell {
 
         const result: FormattedPayTables[] = [];
 
-        pay_tables_received_in_event.forEach(item => {
+        GameShell.open_game_data.payTable.forEach(item => {
             // don't care about 0 payouts
             if(item.payout === 0){
                 return;
             }
+
+            const payout_factor_based_on_bet = parseFloat(GameShell.current_bet) / parseFloat(GameShell.default_bet);
+
+            const multiplier_data = {
+                count: item.count,
+                payout: item.payout * payout_factor_based_on_bet
+            }
+
             const existing_group_index = result.findIndex( i => i.symbol_number === item.symbol);
             if(existing_group_index !== -1){
-                result[existing_group_index].multipliers.push({
-                    count: item.count,
-                    payout: item.payout
-                })
+                result[existing_group_index].multipliers.push(multiplier_data)
             } else {
                 const new_group = {
                     symbol_number: item.symbol,
                     symbol_code: symbol_map[item.symbol] ?? 'unknown',
-                    multipliers: [{
-                        count: item.count,
-                        payout: item.payout
-                    }]
+                    multipliers: [multiplier_data]
                 };
                 result.push(new_group);
             }
@@ -523,21 +528,22 @@ window.addEventListener('change_bet_amount', () => GameShell.show_dialog_by_id('
 
 // @ts-ignore
 window.addEventListener('open_game_data', (open_game_data: CustomEvent<ReelSoftOpenGameData>) => {
-    GameShell.current_bet = reelsoft_number_to_normal_number(open_game_data.detail.defaultBet);
-    GameShell.default_bet = reelsoft_number_to_normal_number(open_game_data.detail.defaultBet);
-    GameShell.bet_levels = open_game_data.detail.betLevels.map((i: number) => {
+    GameShell.open_game_data = open_game_data.detail;
+    GameShell.current_bet = reelsoft_number_to_normal_number(GameShell.open_game_data.defaultBet);
+    GameShell.default_bet = reelsoft_number_to_normal_number(GameShell.open_game_data.defaultBet);
+    GameShell.bet_levels = GameShell.open_game_data.betLevels.map((i: number) => {
         return {
             with_decimals: reelsoft_number_to_normal_number(i),
             raw: i
         }
     });
 
-    GameShell.set_currency_symbol(open_game_data.detail.currency)
+    GameShell.set_currency_symbol(GameShell.open_game_data.currency)
         .then(GameShell.populate_bet_levels);
-    GameShell.format_pay_tables(open_game_data.detail.payTable)
+    GameShell.format_pay_tables()
         .then(GameShell.populate_pay_tables);
 
-    GameShell.update_rtp(open_game_data.detail.rtpVersion);
+    GameShell.update_rtp(GameShell.open_game_data.rtpVersion);
 })
 
 document.addEventListener('keydown', GameShell.handle_escape_key, true); // 'true' for capture phase
