@@ -254,7 +254,9 @@ aside#quick-actions {
 
 
 img.symbol, svg.symbol {
-  max-width: 100px;
+  --size: 120px;
+  max-width: var(--size);
+  max-height: var(--size);
   align-self: center;
 }
 
@@ -291,17 +293,20 @@ img.symbol, svg.symbol {
 section.how-to-play {
   width: min(840px, 100%);
   margin: auto;
+  --gap: 1em;
 
   .row {
     display: flex;
-    margin-bottom: 0.5em;
+    margin-bottom: var(--gap);
   }
 
   .symbol {
-    margin-right: 0.5em;
+    margin-right: var(--gap);
+    --size: 80px;
   }
 
   p {
     text-align: start;
+    align-self: center;
   }
 }
