@@ -190,20 +190,11 @@ dialog.fugaso {
 dialog.fugaso{
   .content {
     .symbol-explainer {
-      display: flex;
-      justify-content: center;
-
-      .column {
+      margin-bottom: 5rem;
+      .row {
         display: flex;
         flex-direction: column;
-        flex: none;
-        align-items: center;
         justify-content: center;
-        text-align: left;
-
-        &.content {
-          max-width: calc(100% - 100px);
-        }
       }
     }
   }

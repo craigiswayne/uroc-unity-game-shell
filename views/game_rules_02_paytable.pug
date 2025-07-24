@@ -5,34 +5,42 @@ section
     .grid.paytable
 
     .symbol-explainer
-        .column
-            img(class='symbol' src=`${my_template_config.asset_domain}/games/miami_blaze/symbols/symbol-WC.png?updatedAt=${my_template_config.cache_bust_params}`)
-        .column.content
-           p
-            | WILD Symbol appear on all reels
-            br
-            | WILD substitutes all symbols except COIN symbol
-    .symbol-explainer
-        .column
-            img(class='symbol' src=`${my_template_config.asset_domain}/games/miami_blaze/symbols/symbol-COIN.png?updatedAt=${my_template_config.cache_bust_params}`)
-        .column.content
-           p
-            | COIN Symbol appear on all reels
-            br
-            | COIN substitutes all symbols except COIN symbol
-    .symbol-explainer
-        .column
-            img(class='symbol' src=`${my_template_config.asset_domain}/games/miami_blaze/symbols/symbol-GOLD_COIN.png?updatedAt=${my_template_config.cache_bust_params}`)
-        .column.content
+        .row
+            div
+                img(class='symbol' src=`${my_template_config.asset_domain}/games/miami_blaze/symbols/symbol-WC.png?updatedAt=${my_template_config.cache_bust_params}`)
+            div Wild Symbol
+        div
             p
-              | GOLDEN COIN Symbol appear on all reels
-              br
-              | GOLDEN COIN substitutes all symbols except COIN symbol
+                | WILD appear on all reels
+                br
+                | WILD substitutes all symbols except DOLPHIN and GOLD DOLPHIN symbol
     .symbol-explainer
-        .column
-            img(class='symbol' src=`${my_template_config.asset_domain}/games/miami_blaze/symbols/symbol-MYSTERY.png?updatedAt=${my_template_config.cache_bust_params}`)
-        .column.content
-           p
-            | MYSTERY symbol appears only during the bonus and can land on any vacant position on any reel.
-            br
-            | MYSTERY Symbol can result in either MULTIPLIER or JACKPOT or THE VORTEX Feature.
+        .row
+            div
+                img(class='symbol' src=`${my_template_config.asset_domain}/games/miami_blaze/symbols/symbol-COIN.png?updatedAt=${my_template_config.cache_bust_params}`)
+            div DOLPHIN COIN SYMBOL
+        div
+            p
+                | DOLPHIN COIN Symbol appear on all reels
+                br
+                | DOLPHIN COIN substitutes all symbols except GOLD DOLPHIN symbol
+    .symbol-explainer
+        .row
+            div
+                img(class='symbol' src=`${my_template_config.asset_domain}/games/miami_blaze/symbols/symbol-GOLD_COIN.png?updatedAt=${my_template_config.cache_bust_params}`)
+            div GOLD DOLPHIN SYMBOL
+        div
+            p
+                | GOLD DOLPHIN SYMBOL appear on all reels
+                br
+                | GOLD DOLPHIN SYMBOL substitutes all symbols except DOLPHIN symbol
+    .symbol-explainer
+        .row
+            div
+                img(class='symbol' src=`${my_template_config.asset_domain}/games/miami_blaze/symbols/symbol-MYSTERY.png?updatedAt=${my_template_config.cache_bust_params}`)
+            div MYSTERY SYMBOL
+        div
+            p
+                | MYSTERY symbol appears only during the bonus and can land on any vacant position on any reel.
+                br
+                | MYSTERY Symbol can result in either MULTIPLIER or JACKPOT or THE VORTEX Feature.

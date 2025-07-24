@@ -215,11 +215,6 @@ aside#quick-actions {
     grid-template-columns: repeat(5, 1fr);
   }
 
-
-  @media (min-width: 1200px) {
-    grid-template-columns: repeat(6, 1fr);
-  }
-
   .item {
     display: flex;
     flex-direction: column;
@@ -258,8 +253,8 @@ aside#quick-actions {
 }
 
 
-img.symbol {
-  max-width: 80px;
+img.symbol, svg.symbol {
+  max-width: 100px;
   align-self: center;
 }
 
@@ -290,5 +285,23 @@ img.symbol {
   100% {
     opacity: 0;
     display: none;
+  }
+}
+
+section.how-to-play {
+  width: min(840px, 100%);
+  margin: auto;
+
+  .row {
+    display: flex;
+    margin-bottom: 0.5em;
+  }
+
+  .symbol {
+    margin-right: 0.5em;
+  }
+
+  p {
+    text-align: start;
   }
 }
