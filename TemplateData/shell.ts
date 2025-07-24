@@ -26,7 +26,7 @@ interface UnityInstance {
 interface FormattedPayTables {
     symbol_number: number,
     symbol_code: string,
-    multipliers: { count: number, payout: number }[]
+    multipliers: { count: number, payout: string }[]
 }
 
 interface RawPayTables {
@@ -47,11 +47,8 @@ const my_template_config = {
 };
 
 class GameShell {
-    // @ts-ignore
-    public static lil_gui?: GUI;
     public static unityInstance?: UnityInstance;
     public static rtp = 100;
-    public static is_fullscreen = false;
     public static current_language = 'en';
     public static currency_prefix = '';
     public static default_bet = '0.00';
@@ -138,36 +135,42 @@ class GameShell {
         dialog.close();
     }
 
-    public static get_unity_canvas() {
-        return document.getElementById('unity-canvas');
+    public static get_unity_canvas(): HTMLCanvasElement {
+        return document.querySelector<HTMLCanvasElement>('#unity-canvas')!;
     }
 
-    // fullscreen_with_shell: () => {
-    //     if (document.fullscreenElement === null) {
-    //         const element = document.documentElement;
-    //         if (element.requestFullscreen) {
-    //             element.requestFullscreen();
-    //             GameShell.is_fullscreen = true;
-    //         }
-    //     } else {
-    //         if (document.exitFullscreen) {
-    //             document.exitFullscreen();
-    //             GameShell.is_fullscreen = false;
-    //         }
-    //     }
-    // },
+    public static is_fullscreen() {
+        return document.querySelector<HTMLInputElement>('#full_screen_status')!.checked;
+    }
 
-    public static toggle_fullscreen() {
+    public static toggle_fullscreen_native() {
+        if (document.fullscreenElement === null) {
+            const element = document.documentElement;
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else {
+                GameShell.toggle_fullscreen_with_unity();
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+                document.querySelector<HTMLInputElement>('#full_screen_status')!.checked = false
+            } else {
+                GameShell.toggle_fullscreen_with_unity();
+            }
+        }
+    }
+
+    public static toggle_fullscreen_with_unity() {
         if (!GameShell.unityInstance) {
             console.log('No unity instance to toggle fullscreen on.')
             return;
         }
-        if (!GameShell.is_fullscreen) {
+        if (!GameShell.is_fullscreen()) {
             GameShell.unityInstance.SetFullscreen(1);
         } else {
             GameShell.unityInstance.SetFullscreen(0);
         }
-        GameShell.is_fullscreen = !GameShell.is_fullscreen;
     }
 
     public static quit_confirm() {
@@ -349,7 +352,7 @@ class GameShell {
 
             const multiplier_data = {
                 count: item.count,
-                payout: item.payout * payout_factor_based_on_bet
+                payout: (item.payout * payout_factor_based_on_bet).toFixed(2)
             }
 
             const existing_group_index = result.findIndex( i => i.symbol_number === item.symbol);
@@ -463,7 +466,28 @@ class GameShell {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
 
+    /**
+     * Player clicked on the game intro
+     * i.e. the "click to continue" screen"
+     * So we want to show the quick actions and perhaps only show the force tool here
+     */
+    public static async player_enters_game(){
+        document.querySelector('#quick-actions')!.classList.add('active');
+        /**
+         * Currently this is only used on the force tool end
+         */
+        const custom_event = new CustomEvent('player_enters_game', {
+            bubbles: false,
+            cancelable: false
+        });
+        window.dispatchEvent(custom_event);
+
+        // we only want to trigger this event once
+        GameShell.get_unity_canvas().removeEventListener('pointerdown', GameShell.player_enters_game);
+    }
+
     public static async init(unityInstance: UnityInstance): Promise<void> {
+        GameShell.get_unity_canvas().addEventListener('pointerdown', GameShell.player_enters_game)
         GameShell.unity_progress = 1;
         while(GameShell.splash_progress !== 1){
             await GameShell.delay(200);
@@ -484,19 +508,16 @@ class GameShell {
             }
         }
 
-        if(GameShell.lil_gui){
-            GameShell.lil_gui.show();
-        }
 
-        document.querySelector('#quick-actions')!.classList.add('active');
         document.querySelectorAll<HTMLInputElement>('label.toggle input[type=checkbox]')
             .forEach(i => {
                 i.addEventListener('change', () => GameShell.toggle(i));
             })
 
-        // @ts-ignore
-        canvas.addEventListener('fullscreenchange', () => {
-            GameShell.is_fullscreen = document.fullscreenElement !== null;
+        // // @ts-ignore
+        document.addEventListener('fullscreenchange', (event) => {
+            // GameShell.toggle_fullscreen_native();
+            console.log('event', event);
         })
 
     }

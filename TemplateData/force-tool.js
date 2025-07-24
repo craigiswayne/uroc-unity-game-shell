@@ -34,4 +34,6 @@ force_tool_options.forEach((name, index) => {
     gui.add({'callback':() => GameShell.send_message_to_unity('forceToolUse', {forceToolId: index+1})}, 'callback').name(name);
 });
 gui.hide();
-GameShell.lil_gui = gui;
+window.addEventListener('player_enters_game', () => {
+    gui.show();
+})

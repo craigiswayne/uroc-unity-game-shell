@@ -155,6 +155,9 @@ aside#quick-actions {
   }
 
   .toggle {
+    *  {
+      pointer-events: none;
+    }
     input[type=checkbox] {
       position: absolute;
       z-index: -1;
