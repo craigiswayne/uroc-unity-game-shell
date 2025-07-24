@@ -1,0 +1,210 @@
+dialog.fugaso {
+  flex-direction: column;
+  color: white;
+  user-select: none;
+  width: 800px;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 31px;
+  font-size: 1.2rem;
+  font-family: sans-serif;
+  padding: 0;
+  text-align: center;
+  background: hsla(0, 0%, 22%, 1);
+  background: linear-gradient(180deg, hsla(0, 0%, 22%, 1) 0%, hsla(20, 3%, 19%, 1) 50%, hsla(0, 0%, 13%, 1) 100%);
+  background: -moz-linear-gradient(180deg, hsla(0, 0%, 22%, 1) 0%, hsla(20, 3%, 19%, 1) 50%, hsla(0, 0%, 13%, 1) 100%);
+  background: -webkit-linear-gradient(270deg, hsla(0, 0%, 22%, 1) 0%, hsla(20, 3%, 19%, 1) 50%, hsla(0, 0%, 13%, 1) 100%);
+  //filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#373737", endColorstr="#312F2E", GradientType=1 );
+  border: 2px solid black;
+  outline: none;
+
+  &[open]{
+    display: flex;
+  }
+
+  &::backdrop {
+    background: var(--background-mask);
+  }
+
+  @media screen and (min-width: 426px) {
+    font-size: 1.5rem
+  }
+
+  @media (max-height: 660px) {
+    height: 100vh;
+    width: 100vw !important;
+    max-height: unset;
+    border-radius: 0;
+    font-size: 16px;
+
+
+    .content {
+      margin: 0.66em;
+    }
+  }
+
+
+  &#game_rules {
+    width: min(100vw, 1400px);
+  }
+
+  header, footer {
+    padding: 0.5em;
+    gap: 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  header {
+    font-size: 1.5em;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  footer {
+
+    &:has(button.cta:nth-child(n+2)) {
+      gap: 2em;
+      margin-top: 0.5em;
+    }
+
+    button.cta {
+      color: black;
+      --background-color: #eee;
+      font-size: 1.2em;
+      border-radius: 12px;
+      padding: 0.4em 0.6em;
+      border: 4px outset var(--background-color);
+      background: var(--background-color);
+
+
+      &:active {
+        border-style: inset;
+      }
+
+      &.error {
+        --background-color: #F44336;
+        color: white;
+      }
+
+      &.success {
+        --background-color: #8BC34A;
+        color: white;
+      }
+
+    }
+  }
+
+  .content {
+    margin: 0.66rem;
+    display: flex;
+    overflow-y: auto;
+    outline: none;
+    flex-grow: 1;
+
+    .column {
+      flex: auto;
+
+      &.center-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
+
+#language_modal {
+
+  .content {
+    img.flag {
+      max-width: 140px;
+      border-radius: 12px;
+      margin: 0 1em;
+    }
+
+    button {
+      background: black;
+      border-radius: 50%;
+      width: var(--size);
+      height: var(--size);
+      border: 4px solid gray;
+      --size: 60px;
+      padding: 0;
+      color: white;
+      line-height: 10px;
+      font-size: 1em;
+      text-align: center;
+
+      &:active {
+        --color: #53b2f7;
+        border-color: var(--color);
+        color: var(--color);
+      }
+    }
+  }
+
+  label {
+    line-height: 1em;
+    font-size: 1.5em;
+    margin: 0.5em 0 0 0;
+    display: block;
+  }
+}
+
+#bet_levels_modal {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.5em;
+    width: 100%;
+    padding: 0.5em;
+  }
+
+  label:has(input[type=radio]) {
+    color: black;
+    --background-color: #9E9E9E;
+    font-size: 1.2em;
+    border-radius: 12px;
+    padding: 0.4em 0.6em;
+    border: 4px outset var(--background-color);
+    background: var(--background-color);
+    cursor: pointer;
+
+    input[type=radio] {
+      visibility: hidden;
+      position: absolute;
+    }
+
+    &:hover {
+      --background-color: var(--color-secondary-lighter);
+    }
+
+    &:has(input[type=radio]:checked) {
+      --background-color: var(--color-secondary);
+    }
+  }
+}
+
+
+dialog.fugaso{
+  .content {
+    .symbol-explainer {
+      display: flex;
+      justify-content: center;
+
+      .column {
+        display: flex;
+        flex-direction: column;
+        flex: none;
+        align-items: center;
+        justify-content: center;
+        text-align: left;
+
+        &.content {
+          max-width: calc(100% - 100px);
+        }
+      }
+    }
+  }
+}

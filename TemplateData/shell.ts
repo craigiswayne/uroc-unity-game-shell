@@ -26,7 +26,7 @@ interface UnityInstance {
 interface FormattedPayTables {
     symbol_number: number,
     symbol_code: string,
-    multipliers: { count: number, payout: string }[]
+    multipliers: { count: number, base_payout: number, payout_for_bet_amount: string}[]
 }
 
 interface RawPayTables {
@@ -352,7 +352,8 @@ class GameShell {
 
             const multiplier_data = {
                 count: item.count,
-                payout: (item.payout * payout_factor_based_on_bet).toFixed(2)
+                base_payout: item.payout,
+                payout_for_bet_amount: (item.payout * parseFloat(GameShell.current_bet)).toFixed(2)
             }
 
             const existing_group_index = result.findIndex( i => i.symbol_number === item.symbol);
@@ -390,7 +391,7 @@ class GameShell {
                 data_container.innerHTML += `
                      <div class="row">
                          <div class="count">x${row.count}</div>
-                         <div class="multiplier">${row.payout}</div>
+                         <div class="multiplier">${row.payout_for_bet_amount}</div>
                      </div>
                  `;
 
