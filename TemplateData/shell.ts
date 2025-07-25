@@ -383,7 +383,7 @@ class GameShell {
 
             const symbol_container = document.createElement('div');
             symbol_container.className = 'symbol_container';
-            symbol_container.innerHTML = `<img class="symbol" src="${my_template_config.asset_domain}/games/miami_blaze/symbols/symbol-${pay_table.symbol_code}.png?updatedAt=${my_template_config.cache_bust_params}" alt="pay table symbol-${pay_table.symbol_number}" />`;
+            symbol_container.innerHTML = `<img class="symbol" src="${my_template_config.asset_domain}/games/miami_blaze/symbols/symbol-${pay_table.symbol_code}.webp?updatedAt=${my_template_config.cache_bust_params}" alt="pay table symbol-${pay_table.symbol_number}" />`;
 
             const data_container = document.createElement('div');
             data_container.className = 'data';

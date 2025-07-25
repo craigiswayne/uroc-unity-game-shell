@@ -254,7 +254,7 @@ aside#quick-actions {
 
 
 img.symbol, svg.symbol {
-  --size: 120px;
+  --size: 5em;
   max-width: var(--size);
   max-height: var(--size);
   align-self: center;
@@ -302,7 +302,7 @@ section.how-to-play {
 
   .symbol {
     margin-right: var(--gap);
-    --size: 80px;
+    --size: 3em;
   }
 
   p {
