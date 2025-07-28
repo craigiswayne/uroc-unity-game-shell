@@ -117,12 +117,6 @@ class GameShell {
     }
 
     public static show_dialog_by_id(id_selector: AvailableDialogs) {
-        /**
-         * Prevent ALL modals from showing
-         */
-        if(GameShell.is_spinning) {
-            return;
-        }
         const dialog = GameShell.get_dialog_by_id(id_selector);
         dialog.addEventListener('click', GameShell.handle_backdrop_click);
         dialog.showModal();

@@ -58,7 +58,7 @@ aside#quick-actions
                     line(x1='128' y1='117' x2='128' y2='205' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='16')
             button.action(onclick='GameShell.show_dialog_by_id("language_modal")')
                 img.flag(src=`${my_template_config.asset_domain}/flags/en.svg?updatedAt=${my_template_config.cache_bust_params}`)
-            button.action(onclick='GameShell.show_dialog_by_id("quit_modal")')
+            button.action.disable_on_spin(onclick='GameShell.show_dialog_by_id("quit_modal")')
                 svg(xmlns='http://www.w3.org/2000/svg' viewbox='0 0 256 256')
                     polyline(points='112 40 48 40 48 216 112 216' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='16')
                     line(x1='112' y1='128' x2='224' y2='128' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='16')
