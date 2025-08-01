@@ -113,7 +113,7 @@ class GameShell {
     }
 
     public static get_dialog_by_id(id_selector: AvailableDialogs): HTMLDialogElement {
-        return document.querySelector<HTMLDialogElement>(`dialog#${id_selector}.fugaso`)!;
+        return document.querySelector<HTMLDialogElement>(`dialog#${id_selector}.uroc-modal`)!;
     }
 
     public static show_dialog_by_id(id_selector: AvailableDialogs) {
