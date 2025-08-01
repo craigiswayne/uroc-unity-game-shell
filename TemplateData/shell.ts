@@ -225,7 +225,7 @@ class GameShell {
 
     public static update_flag_image_elements(language_code: string): void {
         document.querySelectorAll<HTMLImageElement>('img.flag').forEach(i => {
-            i.src = `${my_template_config.asset_domain}/flags/${language_code}.svg?${my_template_config.cache_bust_params}`;
+            i.src = `${my_template_config.asset_domain}/flags/${language_code}.svg`;
         })
     }
 
@@ -371,13 +371,13 @@ class GameShell {
     public static populate_pay_tables(): void {
         const grid = GameShell.get_pay_tables_grid();
         grid.innerHTML = '';
-        GameShell.pay_tables.forEach(pay_table => {
+        GameShell.pay_tables.forEach((pay_table: FormattedPayTables) => {
             const item = document.createElement('div');
             item.className = 'item';
 
             const symbol_container = document.createElement('div');
             symbol_container.className = 'symbol_container';
-            symbol_container.innerHTML = `<img class="symbol" src="${my_template_config.asset_domain}/games/miami_blaze/symbols/symbol-${pay_table.symbol_code}.webp?updatedAt=${my_template_config.cache_bust_params}" alt="pay table symbol-${pay_table.symbol_number}" />`;
+            symbol_container.innerHTML = `<img class="symbol" src="${my_template_config.asset_domain}/games/miami_blaze/symbols/symbol-${pay_table.symbol_code}.webp" alt="symbol ${pay_table.symbol_code} image" />`;
 
             const data_container = document.createElement('div');
             data_container.className = 'data';

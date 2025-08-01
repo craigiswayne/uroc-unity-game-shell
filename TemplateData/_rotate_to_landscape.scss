@@ -4,7 +4,6 @@
   align-items: center;
   justify-content: center;
   position: fixed;
-  pointer-events: none;
   background: rgb(0, 0, 0);
   height: 100vh;
   width: 100vw;
@@ -14,6 +13,7 @@
   z-index: -1;
   visibility: hidden;
   color: white;
+  pointer-events: all;
 
   .phone {
     width: 50px;
