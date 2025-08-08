@@ -310,7 +310,7 @@ class GameShell {
     }
 
     public static async format_pay_tables(): Promise<FormattedPayTables[]> {
-        if(GameShell.open_game_data.payTable === undefined){
+        if(GameShell.open_game_data === undefined || GameShell.open_game_data.payTable === undefined){
             GameShell.pay_tables = [];
             return Promise.resolve(GameShell.pay_tables);
         }
