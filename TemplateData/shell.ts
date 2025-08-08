@@ -414,7 +414,7 @@ class GameShell {
             GameShell.currency_prefix = JSON.parse('"' + currency.prefix + '"');
         } catch (e) {
             console.warn('Failed to decode Unicode escape in currency prefix. Using raw prefix.', currency.prefix, e);
-            GameShell.currency_prefix = '?';
+            GameShell.currency_prefix = '';
         }
     }
 
